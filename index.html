@@ -3,10 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zain Hameed - Data & Decision Science</title>
+    <title>Zain Hameed - AI & Decision Science</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>Welcome to My Site</h1>
-    <p>Econometrics, Philosophy, and AI - Coming Soon.</p>
+    <nav class="navbar">
+        <div class="nav-brand">ZH</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Zain Hameed</h1>
+            <h2>AI Researcher & Decision Scientist</h2>
+            <p class="hero-text">Exploring the intersection of AI, Economics, and Philosophy</p>
+            <div class="social-links">
+                <a href="https://github.com/yourgithub" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/yourlinkedin" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/yourtwitter" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="maze" class="maze">
+        <div class="container">
+            <h2>Interactive Pathfinding Maze</h2>
+            <div class="maze-controls">
+                <button id="resetMaze" class="maze-button">Reset Maze</button>
+                <select id="algorithm" class="maze-select">
+                    <option value="bfs">Breadth-First Search</option>
+                    <option value="dfs">Depth-First Search</option>
+                </select>
+                <div class="legend">
+                    <span class="legend-item"><span class="color-box start"></span>Start</span>
+                    <span class="legend-item"><span class="color-box end"></span>End</span>
+                    <span class="legend-item"><span class="color-box wall"></span>Wall</span>
+                    <span class="legend-item"><span class="color-box path"></span>Path</span>
+                </div>
+            </div>
+            <div id="mazeGrid" class="maze-grid"></div>
+            <p class="maze-instructions">Click to set start (blue) and end (red) points, then watch the algorithm find the path!</p>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>I'm a researcher focused on the intersection of Artificial Intelligence, Decision Science, and Philosophy. My work explores how we can leverage AI to make better decisions while considering the ethical implications of these technologies.</p>
+                    <div class="expertise-areas">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">Decision Theory</span>
+                        <span class="tag">Econometrics</span>
+                        <span class="tag">Philosophy of AI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="research" class="research">
+        <div class="container">
+            <h2>Research</h2>
+            <div class="research-grid">
+                <div class="research-card">
+                    <h3>Econometrics</h3>
+                    <p>Exploring statistical methods and economic theory to analyze data and make predictions.</p>
+                    <a href="econometrics.html" class="read-more">Read More →</a>
+                </div>
+                <div class="research-card">
+                    <h3>Philosophy & Art</h3>
+                    <p>Investigating the philosophical implications of AI and its intersection with human creativity.</p>
+                    <a href="art-philosophy-science.html" class="read-more">Read More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="project-grid">
+                <article class="project-card">
+                    <div class="project-content">
+                        <h3>Interactive Pathfinding Maze</h3>
+                        <p>A visualization of pathfinding algorithms using interactive mazes.</p>
+                        <div class="project-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">Algorithms</span>
+                        </div>
+                        <a href="#" class="project-link">Coming Soon →</a>
+                    </div>
+                </article>
+                <!-- More project cards can be added here -->
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <div class="contact-content">
+                <p>Interested in collaboration or have questions about my research? Feel free to reach out.</p>
+                <a href="mailto:your.email@example.com" class="contact-button">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Zain Hameed. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
