@@ -116,10 +116,12 @@ document.addEventListener("DOMContentLoaded", function() {
             if (startCell && endCell) {
                 clearPath();
                 const algorithm = document.getElementById('algorithm').value;
-                if (algorithm === 'bfs') {
-                    bfs();
-                } else {
-                    dfs();
+                if (algorithm) { // Ensure an algorithm is selected
+                    if (algorithm === 'bfs') {
+                        bfs();
+                    } else {
+                        dfs();
+                    }
                 }
             }
         }
@@ -267,10 +269,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (startCell && endCell) {
             clearPath();
             const algorithm = document.getElementById('algorithm').value;
-            if (algorithm === 'bfs') {
-                bfs();
-            } else {
-                dfs();
+            if (algorithm) { // Ensure an algorithm is selected
+                if (algorithm === 'bfs') {
+                    bfs();
+                } else {
+                    dfs();
+                }
             }
         }
     });
