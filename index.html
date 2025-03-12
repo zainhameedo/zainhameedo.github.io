@@ -13,7 +13,7 @@
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#about">About</a>
-            <a href="#research">Research</a>
+            <a href="#research">Blog</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
         </div>
@@ -41,10 +41,13 @@
             <div class="maze-controls">
                 <button id="resetMaze" class="maze-button">Reset Maze</button>
                 <select id="algorithm" class="maze-select">
-                    <option value="" disabled selected>Choose Algorithm:</option>
                     <option value="bfs">Breadth-First Search</option>
                     <option value="dfs">Depth-First Search</option>
+                    <option value="aStar">A* Search</option>
+                    <option value="dijkstra">Dijkstra's Algorithm</option>
+                    <option value="greedyBestFirstSearch">Greedy Best-First Search</option>
                 </select>
+                <p class="algorithm-instructions">Choose an algorithm!</p>
                 <div class="legend">
                     <span class="legend-item"><span class="color-box start"></span>Start</span>
                     <span class="legend-item"><span class="color-box end"></span>End</span>
@@ -54,6 +57,7 @@
             </div>
             <div id="mazeGrid" class="maze-grid"></div>
             <p class="maze-instructions">Click to set start (blue) and end (red) points, then watch the algorithm find the path!</p>
+            <div id="algorithmExplanation" class="algorithm-explanation"></div>
         </div>
     </section>
 
@@ -76,7 +80,7 @@
 
     <section id="research" class="research">
         <div class="container">
-            <h2>Research</h2>
+            <h2>Blog Topics</h2>
             <div class="research-grid">
                 <div class="research-card">
                     <h3>Econometrics</h3>
@@ -117,7 +121,7 @@
             <h2>Get in Touch</h2>
             <div class="contact-content">
                 <p>Interested in collaboration or have questions about my work? Feel free to reach out.</p>
-                <a href="mailto:your.email@example.com" class="contact-button">
+                <a href="mailto:zainhameed99@gmail.com" class="contact-button">
                     <i class="fas fa-envelope"></i> Contact Me
                 </a>
             </div>
