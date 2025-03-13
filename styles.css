@@ -40,6 +40,12 @@ body {
     padding: 0 2rem;
 }
 
+/* Add a special case for project demo container */
+.project-detail .container {
+    max-width: 100%;
+    padding: 0;
+}
+
 /* Navigation */
 .navbar {
     position: fixed;
@@ -520,17 +526,26 @@ header {
 .project-detail {
     padding: 8rem 0 4rem;
     background-color: var(--bg-color);
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.project-detail .container {
+    max-width: 100%;
+    padding: 0;
 }
 
 .project-detail h1 {
     font-size: 2.5rem;
     margin-bottom: 2rem;
     color: var(--primary-color);
+    padding-left: 2rem;
 }
 
 .project-description {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 2rem;
 }
 
 .project-description p {
@@ -565,33 +580,30 @@ header {
 }
 
 .project-demo {
-    margin-top: 3rem;
+    margin: 3rem auto;
     border-radius: 0.5rem;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 75%;
+    background-color: var(--bg-color);
 }
 
-.project-demo iframe {
+.streamlit-iframe {
     display: block;
     width: 100%;
-    height: 800px;
+    height: 100vh;
     border: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 @media (max-width: 768px) {
-    .project-detail {
-        padding: 6rem 0 3rem;
+    .project-demo {
+        width: 95%;
     }
-
-    .project-detail h1 {
-        font-size: 2rem;
-    }
-
-    .project-description h2 {
-        font-size: 1.5rem;
-    }
-
-    .project-demo iframe {
-        height: 600px;
+    
+    .streamlit-iframe {
+        height: 90vh;
     }
 } 
