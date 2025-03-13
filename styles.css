@@ -297,7 +297,7 @@ body {
     border-radius: 8px; /* Rounded corners */
     font-family: Arial, sans-serif;
     font-size: 16px;
-    font-color: #25282cd3;
+    color: #ffffffd3;
     line-height: 1.6; /* Improves readability */
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for elevation */
     transition: all 0.3s ease-in-out;
@@ -515,4 +515,83 @@ footer {
 
 header {
     padding-left: 20px; /* Add more room on the left for the header */
+}
+
+.project-detail {
+    padding: 8rem 0 4rem;
+    background-color: var(--bg-color);
+}
+
+.project-detail h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.project-description {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.project-description p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.project-description h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+    color: var(--primary-color);
+}
+
+.project-description ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+}
+
+.project-description ul li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.project-description ul li:before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.project-demo {
+    margin-top: 3rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-demo iframe {
+    display: block;
+    width: 100%;
+    height: 800px;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .project-detail {
+        padding: 6rem 0 3rem;
+    }
+
+    .project-detail h1 {
+        font-size: 2rem;
+    }
+
+    .project-description h2 {
+        font-size: 1.5rem;
+    }
+
+    .project-demo iframe {
+        height: 600px;
+    }
 } 
