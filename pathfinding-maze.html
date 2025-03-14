@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Data Forecasting - Zain Hameed</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">ZH</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#research">Research</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" id="theme-toggle">🌙</button>
+    </nav>
+
+    <section id="maze" class="maze">
+        <div class="container">
+            <h2>Interactive Pathfinding Maze</h2>
+            <p>My implementation of fundamental search algorithms that digital and internet technologies rely on.</p>
+            <div class="maze-controls">
+                <button id="resetMaze" class="maze-button">Reset Maze</button>
+                <select id="algorithm" class="maze-select">
+                    <option value="bfs">Breadth-First Search</option>
+                    <option value="dfs">Depth-First Search</option>
+                    <option value="aStar">A* Search</option>
+                    <option value="dijkstra">Dijkstra's Algorithm</option>
+                    <option value="greedyBestFirstSearch">Greedy Best-First Search</option>
+                </select>
+                <p class="algorithm-instructions">Choose an algorithm!</p>
+                <div class="legend">
+                    <span class="legend-item"><span class="color-box start"></span>Start</span>
+                    <span class="legend-item"><span class="color-box end"></span>End</span>
+                    <span class="legend-item"><span class="color-box wall"></span>Wall</span>
+                    <span class="legend-item"><span class="color-box path"></span>Path</span>
+                </div>
+            </div>
+            <div id="mazeGrid" class="maze-grid"></div>
+            <p class="maze-instructions">Click to set start (blue) and end (red) points, then watch the algorithm find the path!</p>
+            <div id="algorithmExplanation" class="algorithm-explanation"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Zain Hameed. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

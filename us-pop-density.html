@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Data Forecasting - Zain Hameed</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">ZH</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#research">Research</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" id="theme-toggle">🌙</button>
+    </nav>
+
+    <!-- GIF Preview Section -->
+    <div class="gif-container" style="text-align:center; margin-top:20px;">
+        <img src="us_pop_density.gif" alt="Population Density Preview" style="max-width:600px; width:100%; height:auto;">
+    </div>
+
+    <section class="project-detail">
+        <div class="container">
+            <h1>US Population Density Growth Over Time</h1>
+            <div class="project-description">
+                <p>
+                    This application demonstrates how the population density of US counties evolved from 1790 to 2020, 
+                    using the US Census Bureau's 2019 ACS data as a baseline, and applying exponential decay for earlier decades. 
+                    The interactive map allows you to explore density changes nationwide over time.
+                </p>
+            </div>
+        </div>
+        
+        <div class="project-demo">
+            <!-- Embedded Streamlit App -->
+            <iframe class="streamlit-iframe" 
+                    src="https://population-density-map-app-nqsjwklrkzsngxfuuytds8.streamlit.app/" 
+                    frameborder="0" 
+                    style="width:100%; height:800px;">
+            </iframe>
+        </div>
+
+        <div class="container">
+            <div class="project-description">
+                <h2>Features</h2>
+                <ul>
+                    <li>Interactive timeline slider to select any decade between 1790 and 2020</li>
+                    <li>County-level choropleth showing density categories from rural to highly urbanized</li>
+                    <li>Tooltips on hover displaying county name, state, and density metrics</li>
+                    <li>Local caching of geometry and population data to improve load performance</li>
+                    <li>Ability to download static PNG images of the current map</li>
+                </ul>
+
+                <h2>Technical Stack</h2>
+                <ul>
+                    <li>Python (Streamlit) for rapid web-based data apps</li>
+                    <li>Pandas and NumPy for data manipulation and exponential decay modeling</li>
+                    <li>GeoPandas for shapefile processing in Albers Equal Area projection</li>
+                    <li>Plotly for interactive choropleth maps and integrated exporting</li>
+                    <li>Census Bureau ACS API for baseline population data</li>
+                    <li>Requests for fetching geometry and shapefile zip data</li>
+                </ul>
+                <p>
+                    If you have any feedback or suggestions for additional features, 
+                    feel free to reach out through the contact form or open an issue on the project's repository.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Zain Hameed. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
