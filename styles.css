@@ -477,6 +477,40 @@ footer {
     section h2 {
         font-size: 2rem;
     }
+
+    .project-demo {
+        width: 100%;
+        margin: 2rem 0;
+    }
+    
+    .streamlit-iframe {
+        height: 90vh;
+    }
+    
+    .project-detail {
+        padding: 6rem 0 2rem;
+    }
+
+    .project-detail h1 {
+        font-size: 2rem;
+        padding-left: 1rem;
+    }
+
+    .project-description {
+        padding: 0 1rem;
+    }
+
+    .project-description h2 {
+        font-size: 1.5rem;
+    }
+
+    .project-description ul li {
+        padding-left: 1.2rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
 }
 
 .blog-index {
