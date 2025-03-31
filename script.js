@@ -192,6 +192,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             await sleep(50);
         }
+        
+        // If we get here, no path was found
+        showWallMessage();
     }
 
     async function dfs() {
@@ -244,6 +247,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             await sleep(50);
         }
+        
+        // If we get here, no path was found
+        showWallMessage();
     }
 
     function isValidMove(row, col) {
@@ -379,6 +385,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             await sleep(50);
         }
+        
+        // If we get here, no path was found
+        showWallMessage();
     }
 
     function heuristic(a, b) {
@@ -452,6 +461,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             await sleep(50);
         }
+        
+        // If we get here, no path was found
+        showWallMessage();
     }
 
     async function greedyBestFirstSearch() {
@@ -503,5 +515,48 @@ document.addEventListener("DOMContentLoaded", function() {
 
             await sleep(50);
         }
+        
+        // If we get here, no path was found
+        showWallMessage();
     }
+
+    // Modify the showWallMessage function
+    function showWallMessage() {
+        const existingMessage = document.querySelector('.wall-message');
+        if (existingMessage) return; // Prevent multiple messages
+
+        const message = document.createElement('div');
+        message.className = 'wall-message';
+        message.textContent = 'Oops! The end point is blocked by walls! 🤪';
+        message.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            animation: fadeOut 7s linear forwards;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        `;
+
+        document.body.appendChild(message);
+        setTimeout(() => {
+            message.remove();
+        }, 7000);
+    }
+
+    // Modify the CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            20% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
 });
