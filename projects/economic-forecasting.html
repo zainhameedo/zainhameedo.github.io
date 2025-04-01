@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Economic Data Forecasting - Zain Hameed</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-brand">ZH</div>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="index.html#about">About</a>
-            <a href="index.html#research">Research</a>
-            <a href="index.html#projects">Projects</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="../index.html">Home</a>
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#research">Blog</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="../index.html#contact">Contact</a>
         </div>
-        <button class="theme-toggle" id="theme-toggle">🌙</button>
+        <button class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </nav>
 
     <section class="project-detail">
@@ -28,7 +32,12 @@
         </div>
         
         <div class="project-demo">
-            <iframe class="streamlit-iframe" src="https://demand-forecast-app-5gizbzzfqezz5kok6xt9mt.streamlit.app/?embed=true&hide_topBar=true&hide_sidebar=true" frameborder="0"></iframe>
+            <iframe class="streamlit-iframe" 
+                    src="https://demand-forecast-app-5gizbzzfqezz5kok6xt9mt.streamlit.app/?embed=true&embed_options=disable_scrolling" 
+                    frameborder="0" 
+                    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+                    sandbox="allow-forms allow-popups allow-presentation allow-same-origin allow-scripts">
+            </iframe>
         </div>
 
         <div class="container">
@@ -61,6 +70,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>  <!-- I don't think I need this-->
+    <script src="../js/script.js"></script>
 </body>
 </html> 

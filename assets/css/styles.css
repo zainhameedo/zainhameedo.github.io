@@ -297,7 +297,7 @@ body {
 }
 
 .algorithm-explanation {
-    max-width: 400px;  /* Limits width to a readable size */
+    max-width: 300px;  /* Reduced from 400px to 300px (75%) */
     margin: 20px auto; /* Centers the box */
     padding: 15px;
     background-color: #40505f; /* Light gray background */
@@ -653,7 +653,7 @@ header {
 }
 
 .project-detail {
-    padding: 8rem 0 4rem;
+    padding: 8rem 0 2rem;
     background-color: var(--bg-color);
     width: 100%;
     overflow-x: hidden;
@@ -709,18 +709,20 @@ header {
 }
 
 .project-demo {
-    margin: 3rem auto;
+    margin: 2rem auto;
     border-radius: 0.5rem;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 75%;
     background-color: var(--bg-color);
+    min-height: 1200px;
+    height: calc(100vh - 200px);
 }
 
 .streamlit-iframe {
     display: block;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     border: none;
     margin: 0;
     padding: 0;
@@ -730,9 +732,11 @@ header {
 @media (max-width: 768px) {
     .project-demo {
         width: 95%;
+        min-height: 800px;
+        height: calc(100vh - 150px);
     }
     
     .streamlit-iframe {
-        height: 90vh;
+        height: 100%;
     }
 } 
