@@ -4,9 +4,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     
     // Initialize theme
-    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDarkScheme.matches)) {
+    if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
         themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        // Explicitly set light mode as default
+        localStorage.setItem('theme', 'light');
+        document.documentElement.removeAttribute('data-theme');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     }
 
     // Theme toggle click handler
@@ -527,7 +532,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const message = document.createElement('div');
         message.className = 'wall-message';
-        message.textContent = 'Oops! The end point is blocked by walls! 🤪';
+        message.textContent = 'Oops! The end point is blocked by walls!';
         message.style.cssText = `
             position: fixed;
             top: 20px;
@@ -559,4 +564,153 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     `;
     document.head.appendChild(style);
+
+    // Add color scheme styles
+    const colorStyles = document.createElement('style');
+    colorStyles.textContent = `
+        :root {
+            --background: #ffffff;
+            --text: #333333;
+            --cell-border: #e0e0e0;
+            --wall: #2c3e50;
+            --start: #27ae60;
+            --end: #e74c3c;
+            --visited: #3498db;
+            --path: #f1c40f;
+            --hover: #ecf0f1;
+        }
+
+        [data-theme="dark"] {
+            --background: #1a1a1a;
+            --text: #ffffff;
+            --cell-border: #404040;
+            --wall: #34495e;
+            --start: #2ecc71;
+            --end: #e74c3c;
+            --visited: #3498db;
+            --path: #f39c12;
+            --hover: #2c2c2c;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .cell {
+            background-color: var(--background);
+            border: 1px solid var(--cell-border);
+            transition: background-color 0.3s ease;
+        }
+
+        .cell:hover {
+            background-color: var(--hover);
+        }
+
+        .wall {
+            background-color: var(--wall);
+        }
+
+        .start {
+            background-color: var(--start);
+        }
+
+        .end {
+            background-color: var(--end);
+        }
+
+        .visited {
+            background-color: var(--visited);
+            opacity: 0.7;
+        }
+
+        .path {
+            background-color: var(--path);
+        }
+
+        /* Update wall message styling for better contrast */
+        .wall-message {
+            background-color: var(--wall) !important;
+            color: white !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            font-weight: 500 !important;
+        }
+
+        /* Algorithm selector and reset button styling */
+        #controls {
+            margin: 20px 0;
+        }
+
+        #algorithm, #resetMaze {
+            background-color: var(--background);
+            color: var(--text);
+            border: 1px solid var(--cell-border);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #algorithm:hover, #resetMaze:hover {
+            background-color: var(--hover);
+        }
+
+        [data-theme="dark"] #algorithm,
+        [data-theme="dark"] #resetMaze {
+            border-color: var(--cell-border);
+        }
+
+        /* Algorithm explanation styling */
+        #algorithmExplanation {
+            background-color: var(--background);
+            border: 1px solid var(--cell-border);
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px auto;
+            line-height: 1.6;
+            max-width: 800px;
+            text-align: left;
+            color: var(--text);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Light mode specific styles */
+        #algorithmExplanation {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+
+        /* Dark mode specific styles */
+        [data-theme="dark"] #algorithmExplanation {
+            background-color: var(--background);
+            border-color: var(--cell-border);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .cell {
+                width: 20px;
+                height: 20px;
+            }
+
+            #controls {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+            }
+
+            #algorithmExplanation {
+                margin: 20px 15px;
+                padding: 15px;
+            }
+        }
+    `;
+
+    document.head.appendChild(colorStyles);
 });
