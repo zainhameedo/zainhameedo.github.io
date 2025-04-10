@@ -189,15 +189,16 @@ body {
 
 .maze-grid {
     display: grid;
-    grid-template-columns: repeat(15, 30px);
-    grid-template-rows: repeat(15, 30px);
-    gap: 1px;
+    grid-template-columns: repeat(15, 12px);
+    grid-template-rows: repeat(15, 12px);
+    gap: 0px;
     background-color: var(--accent-color);
     padding: 1px;
     margin: 0 auto;
     width: fit-content;
     border-radius: 0.5rem;
     overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .cell {
@@ -206,6 +207,7 @@ body {
     background-color: var(--bg-color);
     transition: background-color 0.3s ease;
     cursor: pointer;
+    border: 0.5px solid var(--accent-color);
 }
 
 .cell.wall {
