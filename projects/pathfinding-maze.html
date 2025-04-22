@@ -6,6 +6,7 @@
     <title>Interactive Pathfinding Maze - Zain Hameed</title>
     <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/maze.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -13,9 +14,9 @@
         <div class="nav-brand">ZH</div>
         <div class="nav-links">
             <a href="../index.html">Home</a>
-            <a href="../index.html#about">About</a>
-            <a href="../index.html#research">Blog</a>
             <a href="../index.html#projects">Projects</a>
+            <a href="../index.html#research">Blog</a>
+            <a href="../index.html#about">About</a>
             <a href="../index.html#contact">Contact</a>
         </div>
         <button class="theme-toggle">
@@ -23,10 +24,12 @@
         </button>
     </nav>
 
-    <section id="maze" class="maze">
+    <section id="maze" class="maze project-detail">
         <div class="container">
-            <h2>Interactive Pathfinding Maze</h2>
-            <p>My implementation of fundamental search algorithms that digital and internet technologies rely on.</p>
+            <h1>Interactive Pathfinding Maze</h1>
+            <div class="project-description">
+                <p>My implementation of fundamental search algorithms that digital and internet technologies rely on.</p>
+            </div>
             <div class="maze-controls">
                 <button id="resetMaze" class="maze-button">Reset Maze</button>
                 <select id="algorithm" class="maze-select">
@@ -36,15 +39,18 @@
                     <option value="dijkstra">Dijkstra's Algorithm</option>
                     <option value="greedyBestFirstSearch">Greedy Best-First Search</option>
                 </select>
-                <p class="algorithm-instructions">Choose an algorithm!</p>
-                <div class="legend">
-                    <span class="legend-item"><span class="color-box start"></span>Start</span>
-                    <span class="legend-item"><span class="color-box end"></span>End</span>
-                    <span class="legend-item"><span class="color-box wall"></span>Wall</span>
-                    <span class="legend-item"><span class="color-box path"></span>Path</span>
-                </div>
+                <p class="algorithm-instructions">← Choose an algorithm!</p>
             </div>
+            
+            <div class="legend">
+                <span class="legend-item"><span class="color-box start"></span>Start</span>
+                <span class="legend-item"><span class="color-box end"></span>End</span>
+                <span class="legend-item"><span class="color-box wall"></span>Wall</span>
+                <span class="legend-item"><span class="color-box path"></span>Path</span>
+            </div>
+            
             <div id="mazeGrid" class="maze-grid"></div>
+            
             <p class="maze-instructions">Click to set start (blue) and end (red) points, then watch the algorithm find the path!</p>
             <div id="algorithmExplanation" class="algorithm-explanation"></div>
         </div>
@@ -52,10 +58,26 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 Zain Hameed. All rights reserved.</p>
+            <p>&copy; 2025 Zain Hameed. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="../js/script.js"></script>
+    <!-- Use our dedicated maze.js script -->
+    <script src="../js/maze.js"></script>
+    <!-- Call theme toggle setup directly -->
+    <script>
+        // Call immediately and also on DOMContentLoaded to ensure it runs
+        if (window.setupThemeToggle) {
+            window.setupThemeToggle();
+        }
+        
+        // Also set up when DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.setupThemeToggle) {
+                window.setupThemeToggle();
+                console.log("Theme toggle setup called from DOMContentLoaded");
+            }
+        });
+    </script>
 </body>
 </html> 

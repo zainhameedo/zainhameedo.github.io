@@ -6,16 +6,39 @@
     <title>Zain Hameed - Econometrics</title>
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/maze.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            20% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+        
+        .wall-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            animation: fadeOut 7s linear forwards;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-brand">ZH</div>
         <div class="nav-links">
             <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#research">Blog</a>
             <a href="#projects">Projects</a>
+            <a href="#research">Blog</a>
+            <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </div>
         <button class="theme-toggle">
@@ -29,14 +52,14 @@
             <h2>Economic and Data Analyst</h2>
             <p class="hero-text">Exploring the intersection of Economics, Math, Biochemistry</p>
             <div class="social-links">
-                <a href="https://github.com/zainhameed99" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://github.com/zainhameedo" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/zain-hameed/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 <a href="https://x.com/ZainHameedo" target="_blank"><i class="fab fa-twitter"></i></a>
             </div>
         </div>
     </section>
 
-    <section id="maze" class="maze">
+    <section id="maze" class="maze project-detail">
         <div class="container">
             <h2>Interactive Pathfinding Maze</h2>
             <p class="maze-instructions">Click to set start (blue) and end (red) points, then watch the algorithm find the path!</p>
@@ -49,33 +72,19 @@
                     <option value="dijkstra">Dijkstra's Algorithm</option>
                     <option value="greedyBestFirstSearch">Greedy Best-First Search</option>
                 </select>
-                <p class="algorithm-instructions">Choose an algorithm!</p>
-                <div class="legend">
-                    <span class="legend-item"><span class="color-box start"></span>Start</span>
-                    <span class="legend-item"><span class="color-box end"></span>End</span>
-                    <span class="legend-item"><span class="color-box wall"></span>Wall</span>
-                    <span class="legend-item"><span class="color-box path"></span>Path</span>
-                </div>
+                <p class="algorithm-instructions">← Choose an algorithm!</p>
             </div>
+            
+            <div class="legend">
+                <span class="legend-item"><span class="color-box start"></span>Start</span>
+                <span class="legend-item"><span class="color-box end"></span>End</span>
+                <span class="legend-item"><span class="color-box wall"></span>Wall</span>
+                <span class="legend-item"><span class="color-box path"></span>Path</span>
+            </div>
+            
             <div id="mazeGrid" class="maze-grid"></div>
+            
             <div id="algorithmExplanation" class="algorithm-explanation"></div>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2>About Me</h2>
-            <div class="about-grid">
-                <div class="about-text">
-                    <p>I'm an analytical thinker with a background in Economics and Biochemistry who thrives at the intersection of data science, business strategy, and financial decision-making. Excited for what's next!</p>
-                    <div class="expertise-areas">
-                        <span class="tag">Economics</span>
-                        <span class="tag">Biochemistry</span>
-                        <span class="tag">Decision Theory</span>
-                        <span class="tag">History of Technology</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -96,12 +105,12 @@
                 </article>
                 <div class="project-card">
                     <div class="project-content">
-                        <h3>Economic Data Forecasting</h3>
+                        <h3>Live Economic Data Forecasting</h3>
                         <p>Interactive forecasting tool using ARIMA and XGBoost models to predict economic trends for various economic indicators. Features real-time data from FRED API and interactive parameter adjustment.</p>
                         <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Machine Learning</span>
-                            <span class="tag">Data Analysis</span>
+                            <span class="tag">FRED</span>
+                            <span class="tag">XGBoost</span>
+                            <span class="tag">Economic Signals</span>
                         </div>
                         <a href="projects/economic-forecasting.html" class="project-link">View Project →</a>
                     </div>
@@ -111,11 +120,28 @@
                         <h3>US Population Density Growth Over Time</h3>
                         <p>Interactive visualization showing population density changes across US states and counties from 1790 to present day, with time-lapse animation and detailed statistics.</p>
                         <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Machine Learning</span>
-                            <span class="tag">Data Analysis</span>
+                            <span class="tag">Demography</span>
+                            <span class="tag">GeoPandas</span>
+                            <span class="tag">Visual Modeling</span>
                         </div>
                         <a href="projects/us-pop-density.html" class="project-link">View Project →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>I'm an analytical thinker with a background in Economics and Biochemistry who thrives at the intersection of data science, business strategy, and financial decision-making. Excited for what's next!</p>
+                    <div class="expertise-areas">
+                        <span class="tag">Economics</span>
+                        <span class="tag">Biochemistry</span>
+                        <span class="tag">Commodity Markets</span>
+                        <span class="tag">History of Technology</span>
                     </div>
                 </div>
             </div>
@@ -129,12 +155,12 @@
                 <div class="research-card">
                     <h3>Econometrics</h3>
                     <p>Exploring statistical methods and economic theory to analyze data and make predictions.</p>
-                    <a href="blog/econometrics.html" class="read-more">Read More →</a>
+                    <a href="" class="read-more">Coming Soon →</a>
                 </div>
                 <div class="research-card">
                     <h3>Art, Philosophy, and Science</h3>
-                    <p>Blog about the three lenses of figuring things out.</p>
-                    <a href="blog/art-philosophy-science.html" class="read-more">Read More →</a>
+                    <p>Blog about the three lenses of figuring things out.</p> <br>
+                    <a href="" class="read-more">Coming Soon →</a>
                 </div>
             </div>
         </div>
@@ -170,7 +196,23 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <!-- Load maze.js with the global theme toggle function -->
+    <script src="js/maze.js"></script>
+    <!-- Call theme toggle setup directly, without waiting for DOMContentLoaded since script is at bottom -->
+    <script>
+        // Call immediately and also on DOMContentLoaded to ensure it runs
+        if (window.setupThemeToggle) {
+            window.setupThemeToggle();
+        }
+        
+        // Also set up when DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.setupThemeToggle) {
+                window.setupThemeToggle();
+                console.log("Theme toggle setup called from DOMContentLoaded");
+            }
+        });
+    </script>
 </body>
 </html>
 

@@ -14,8 +14,8 @@
         <div class="nav-links">
             <a href="../index.html">Home</a>
             <a href="../index.html#about">About</a>
-            <a href="../index.html#research">Blog</a>
             <a href="../index.html#projects">Projects</a>
+            <a href="../index.html#research">Blog</a>
             <a href="../index.html#contact">Contact</a>
         </div>
         <button class="theme-toggle">
@@ -125,6 +125,17 @@
     <footer>
         <p>&copy; 2024 Zain Hameed. All rights reserved.</p>
     </footer>
-    <script src="../js/script.js"></script>
+    
+    <!-- First load maze.js for the global theme toggle function -->
+    <script src="../js/maze.js"></script>
+    <!-- Simple call to the global theme toggle function -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Use the global theme toggle function from maze.js
+            if (window.setupThemeToggle) {
+                window.setupThemeToggle();
+            }
+        });
+    </script>
 </body>
 </html>
