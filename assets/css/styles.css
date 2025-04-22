@@ -5,6 +5,11 @@
     padding: 0;
 }
 
+html {
+    scroll-padding-top: var(--header-height);
+    scroll-behavior: smooth;
+}
+
 /* Variables */
 :root {
     /* Colors */
