@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Materiel · Zain Hameed</title>
+  <meta name="description" content="A working model of a defense hardware manufacturer, from purchase order to fielded unit, and four questions it answers.">
+  <meta property="og:title" content="Materiel">
+  <meta property="og:description" content="A working model of a hardware company, from purchase order to fielded unit.">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../js/site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="home" href="../">Zain Hameed</a>
+    <nav>
+      <a href="https://github.com/zainhameedo/materiel">Code</a>
+      <button class="mode" type="button" aria-label="Toggle dark mode">Dark</button>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <div class="page">
+        <h1>Materiel</h1>
+        <p class="lede">A working model of a hardware company, from purchase order to a unit in the field, and four questions it can answer.</p>
+        <p class="byline meta">Zain Hameed · October 2026 · <a href="https://github.com/zainhameedo/materiel">Source on GitHub</a></p>
+
+        <p>Every company that builds physical things asks the same few questions, usually in a meeting and usually without a good answer. If this supplier stopped shipping tomorrow, what couldn't we build? Which part will stop the line next? How many of the units we've delivered work right now? And when we changed something, did it help?</p>
+        <p>The facts needed to answer them exist. They are split across a purchasing system, a production system, field service records and a quality database, each with its own names for the same things. Most of the work is joining them: deciding what a part, a supplier, a build and a fielded unit are, how they relate, and writing that down as code that can be tested.</p>
+        <p>This project does that for a fictional manufacturer of three defense products, and builds the answers on top. Everything below is computed from the model and is interactive.</p>
+
+        <p class="note">The company and its data are synthetic, generated with realistic mechanics: late parts stall builds, bad lots fail inspection, fielded units break and wait on spares. The pipeline is real and runs end to end in CI. Synthetic data has one advantage, which section four uses: I know the true answer, so you can check whether the method finds it.</p>
+      </div>
+
+      <div class="wide">
+        <div class="stats" id="stats" aria-label="Scale of the model"></div>
+      </div>
+
+      <div class="page">
+        <h2>1. If a supplier stopped shipping tomorrow</h2>
+        <p>Each supplier on the left connects to the parts it makes, and each part to the products that use it. Select a supplier to trace what depends on it. Its sole-source parts are the ones that matter: if nobody else makes a part, the line stops until a new source is qualified, which takes at least one lead time.</p>
+      </div>
+
+      <figure class="wide" id="fig-web">
+        <div class="fig-head">
+          <div class="controls">
+            <label class="fig-sub" for="sup-select">Supplier</label>
+            <select id="sup-select"></select>
+          </div>
+          <div class="fig-sub">Click any supplier, part or product</div>
+        </div>
+        <div class="web">
+          <div class="web-canvas" id="web-canvas"></div>
+          <aside class="readout panel" id="readout" aria-live="polite"></aside>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i>Selected and what depends on it</span>
+          <span><i style="background:var(--blue)"></i>Other suppliers of the same parts</span>
+          <span><i style="background:var(--ink);opacity:.5"></i>Flight-critical part</span>
+        </div>
+        <figcaption><b>Builds at risk</b> = planned monthly build rate × the part's lead time × the supplier's share of that part (all of it, if sole-sourced): the builds that can't start before a replacement source could deliver. <b>Fielded units</b> are delivered units of products that use the supplier's parts, and so draw on it for spares.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p>The view's real lesson is concentration. <span data-bind="soleCritSuppliers"></span> of 60 suppliers are the only source of at least one flight-critical part, and those parts sit in every product. Second sources for those parts would be cheap insurance, and the readout above shows which ones.</p>
+
+        <h2>2. Which parts will stop the line</h2>
+        <p>Risk here is likelihood times impact. Likelihood blends a forecast (how late the part's suppliers have run, spread across however many there are) with history (the share of builds the part has already blocked). Impact is whether the part is flight-critical, how many products use it, and how long it takes to replace.</p>
+      </div>
+
+      <figure class="wide" id="fig-risk">
+        <div class="fig-head">
+          <div class="fig-title">Parts by likelihood and impact of stopping production</div>
+          <div class="fig-sub">Circle area is 12-month spend · curves join parts of equal risk</div>
+        </div>
+        <div id="risk-canvas"></div>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i>Sole-sourced</span>
+          <span><i style="background:transparent;border:1.5px solid var(--faint)"></i>Two or more suppliers</span>
+        </div>
+      </figure>
+
+      <div class="page">
+        <p>The top of the list is what you'd expect once you see it and would struggle to name without it. <span data-bind="topPartSentence"></span> Below the top handful, risk falls off quickly; most parts are dual-sourced, short lead time, or both.</p>
+
+        <h2>3. Is the fleet ready</h2>
+        <p>Fielded units fail at rates set by their design, but how long they stay down is mostly a question of how fast spares arrive, which makes it a supplier question again.</p>
+      </div>
+
+      <figure class="wide" id="fig-fleet">
+        <div class="multiples" id="multiples"></div>
+        <figcaption><b>Availability</b> (line) is the share of fielded unit-days that units were not waiting on repair. <b>Bars</b> show the share of each month's build starts stopped by a part shortage. Hover for monthly figures.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p><span data-bind="fleetSentence"></span></p>
+
+        <h2>4. Did the supplier program work?</h2>
+        <p>In July 2025 the company enrolled its twenty worst-quality suppliers in a development program: on-site engineers, process audits, tighter first-article inspection. A year later, someone asks whether it worked. There are three common ways to answer, and two of them are wrong.</p>
+      </div>
+
+      <figure class="wide" id="fig-trend">
+        <div class="fig-head">
+          <div class="fig-title">Parts rejected at receiving inspection, per million received</div>
+          <div class="fig-sub">Monthly, enrolled suppliers vs. all others</div>
+        </div>
+        <div id="trend-canvas"></div>
+      </figure>
+
+      <div class="page">
+        <p>The obvious comparison, enrolled suppliers against everyone else after launch, says enrolled suppliers reject <span data-bind="naiveCross"></span> parts as everyone else. That is true and beside the point: they were enrolled because they were the worst. Comparing enrolled suppliers before and after does better, but it credits the program with everything else that changed over the same months, and something did. As production ramped, every supplier's defect rate crept up.</p>
+        <p>Difference-in-differences handles both problems. It compares the change for enrolled suppliers with the change for everyone else: supplier fixed effects absorb each supplier's baseline, and month fixed effects absorb whatever hit all of them at once. Rejections are counts out of parts inspected, so the model is a Poisson regression with inspected units as the exposure, and standard errors are clustered by supplier.</p>
+      </div>
+
+      <figure class="wide" id="fig-program">
+        <div class="two-up">
+          <div>
+            <div class="fig-head"><div class="fig-title">Four estimates of the program's effect</div></div>
+            <div id="est-canvas"></div>
+          </div>
+          <div>
+            <div class="fig-head"><div class="fig-title">Effect by month relative to enrollment</div></div>
+            <div id="event-canvas"></div>
+          </div>
+        </div>
+        <figcaption>Change in defect rate, enrolled vs. others, with 95% intervals. The band marks the planted effect, which phases in to 35% over three months. Month −1 is the reference.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p>The event study on the right is the check that matters. Before enrollment, the enrolled suppliers move with everyone else and the estimates sit on zero. After, the gap opens over about three months and holds. A placebo that pretends the program began in January 2025 finds nothing.</p>
+        <p>I planted a 35% reduction at full strength. The estimate is <span data-bind="didEffect"></span>, with a 95% interval of <span data-bind="didCI"></span>; the average sits a little below 35% because the effect takes three months to arrive. The naive comparison gets the sign wrong, and the before-and-after comparison misses about a third of the effect.</p>
+
+        <h2>How it's built</h2>
+        <p>The pipeline is small enough to read in an afternoon, and laid out the way it would be with real systems behind it.</p>
+      </div>
+
+      <figure class="wide arch" id="fig-arch">
+        <svg viewBox="0 0 1000 250" role="img" aria-label="Pipeline: sources land in Iceberg, SQLMesh models them in three layers, Flyte orchestrates, outputs feed this page and the estimator tests.">
+          <defs>
+            <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="currentColor" style="stroke:var(--faint)"/></marker>
+          </defs>
+          <text class="lane" x="0" y="14">Source systems</text>
+          <text class="lane" x="196" y="14">Lake</text>
+          <text class="lane" x="376" y="14">Transformation · SQLMesh</text>
+          <text class="lane" x="840" y="14">Outputs</text>
+          <g class="box"><rect x="0" y="28" width="150" height="40" rx="5"/><text class="t" x="12" y="46">Purchasing</text><text class="s" x="12" y="60">orders, receipts, inspection</text></g>
+          <g class="box"><rect x="0" y="76" width="150" height="40" rx="5"/><text class="t" x="12" y="94">Production</text><text class="s" x="12" y="108">BOM, work orders</text></g>
+          <g class="box"><rect x="0" y="124" width="150" height="40" rx="5"/><text class="t" x="12" y="142">Field service</text><text class="s" x="12" y="156">units, repairs</text></g>
+          <g class="box"><rect x="0" y="172" width="150" height="40" rx="5"/><text class="t" x="12" y="190">Quality</text><text class="s" x="12" y="204">program enrollment</text></g>
+          <g class="box hl"><rect x="196" y="76" width="140" height="88" rx="5"/><text class="t" x="208" y="98">Apache Iceberg</text><text class="s" x="208" y="114">10 tables</text><text class="s" x="208" y="128">every load a snapshot</text><text class="s" x="208" y="142">time travel for audits</text></g>
+          <g class="box"><rect x="376" y="76" width="130" height="88" rx="5"/><text class="t" x="388" y="98">Staging</text><text class="s" x="388" y="114">10 views</text><text class="s" x="388" y="128">types, names, keys</text><text class="s" x="388" y="142">source audits</text></g>
+          <g class="box hl"><rect x="530" y="76" width="140" height="88" rx="5"/><text class="t" x="542" y="98">Entities</text><text class="s" x="542" y="114">product, part, supplier,</text><text class="s" x="542" y="128">order line, build,</text><text class="s" x="542" y="142">fielded unit, repair</text></g>
+          <g class="box"><rect x="694" y="76" width="120" height="88" rx="5"/><text class="t" x="706" y="98">Analysis</text><text class="s" x="706" y="114">exposure, risk,</text><text class="s" x="706" y="128">readiness, quality</text><text class="s" x="706" y="142">panel</text></g>
+          <g class="box"><rect x="840" y="52" width="160" height="40" rx="5"/><text class="t" x="852" y="70">Estimator</text><text class="s" x="852" y="84">Poisson DiD, tested</text></g>
+          <g class="box"><rect x="840" y="148" width="160" height="40" rx="5"/><text class="t" x="852" y="166">This page</text><text class="s" x="852" y="180">69 KB of JSON, D3</text></g>
+          <path class="edge" d="M150,48 C175,48 172,100 196,104" marker-end="url(#arrow)"/>
+          <path class="edge" d="M150,96 C172,96 176,112 196,114" marker-end="url(#arrow)"/>
+          <path class="edge" d="M150,144 C172,144 176,128 196,126" marker-end="url(#arrow)"/>
+          <path class="edge" d="M150,192 C175,192 172,140 196,136" marker-end="url(#arrow)"/>
+          <path class="edge" d="M336,120 L376,120" marker-end="url(#arrow)"/>
+          <path class="edge" d="M506,120 L530,120" marker-end="url(#arrow)"/>
+          <path class="edge" d="M670,120 L694,120" marker-end="url(#arrow)"/>
+          <path class="edge" d="M814,110 C828,110 826,72 840,72" marker-end="url(#arrow)"/>
+          <path class="edge" d="M814,130 C828,130 826,168 840,168" marker-end="url(#arrow)"/>
+          <rect x="186" y="226" width="638" height="20" rx="4" style="fill:var(--wash);stroke:var(--rule)"/>
+          <text x="198" y="240">Flyte workflow: land → test → plan and audit → export. Runs locally, in CI weekly, or on a cluster.</text>
+        </svg>
+      </figure>
+
+      <div class="page">
+        <ul>
+          <li><b>Storage.</b> Apache Iceberg tables. Each load is a new snapshot, so last week's extract stays queryable when a number moves and someone asks why.</li>
+          <li><b>Modeling.</b> SQLMesh, 22 models in three layers. The middle layer is the part that matters: one definition of each thing the company talks about, with its relationships and derived facts (is this order late, is this unit down). Everything above reads from it.</li>
+          <li><b>Checks.</b> 33 audits run on every build, from uniqueness of keys to "a receipt can't precede its order." Unit tests pin the logic that is easiest to get wrong: lateness on orders that haven't arrived, and repair intervals clipped to month boundaries.</li>
+          <li><b>Analysis.</b> statsmodels. The estimator has its own tests, which fail if it stops recovering the planted effect or starts finding one in the placebo.</li>
+          <li><b>Orchestration.</b> One Flyte workflow, run in CI every week so drift in a dependency shows up before a reader finds it.</li>
+        </ul>
+        <p>The supplier exposure model shows the style. The business rule is in the code, in a form someone in operations can check:</p>
+<pre><code><span class="tok-c">/* Builds that cannot start within one replacement lead time if this supply stops.
+   Sole-source parts stop the line outright; split parts lose this supplier's share. */</span>
+pr.planned_monthly_rate * s.nominal_lead_time_days / <span class="tok-s">30.0</span>
+  * <span class="tok-k">CASE WHEN</span> s.is_sole_source <span class="tok-k">THEN</span> <span class="tok-s">1.0</span> <span class="tok-k">ELSE</span> s.allocation_share <span class="tok-k">END AS</span> builds_at_risk</code></pre>
+
+        <h2>What's simplified</h2>
+        <ul>
+          <li>The data is synthetic. The generator is in the repository, with every mechanism it simulates written out.</li>
+          <li>Exposure counts lead time but not inventory. With on-hand stock and safety stock, "builds at risk" becomes days of cover, which is the number a planner actually wants.</li>
+          <li>The risk weights are judgment. With real history I would fit them against which parts actually blocked builds the following quarter, and check that a score of 60 means what it says.</li>
+          <li>The program launched on one date for everyone. A staggered rollout would need an estimator built for staggered timing, such as Callaway and Sant'Anna's, because the two-way fixed effects model above can be badly biased in that setting.</li>
+        </ul>
+        <p>If you work on problems like this, I'd like to hear from you: <a href="mailto:zainhameed99@gmail.com">zainhameed99@gmail.com</a>.</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Zain Hameed</span>
+    <span><a href="../">Home</a> · <a href="https://github.com/zainhameedo/materiel">Code</a> · <a href="materiel.json">Data</a></span>
+  </footer>
+
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="materiel.js?v=3"></script>
+</body>
+</html>

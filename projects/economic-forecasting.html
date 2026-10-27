@@ -1,85 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Economic Data Forecasting - Zain Hameed</title>
-    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forecasting economic series · Zain Hameed</title>
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../js/site.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">ZH</div>
-        <div class="nav-links">
-            <a href="../index.html">Home</a>
-            <a href="../index.html#about">About</a>
-            <a href="../index.html#projects">Projects</a>
-            <a href="../index.html#research">Blog</a>
-            <a href="../index.html#contact">Contact</a>
-        </div>
-        <button class="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </button>
-    </nav>
-
-    <section class="project-detail">
-        <div class="container">
-            <h1>Live Economic Data Forecasting</h1>
-            <div class="project-description">
-                <p>My implementation of cutting-edge forecasting models on key St. Louis Fed economic data</p>
-            </div>
-        </div>
-        
-        <div class="project-demo">
-            <iframe class="streamlit-iframe" 
-                    src="https://demand-forecast-app-5gizbzzfqezz5kok6xt9mt.streamlit.app/?embed=true&embed_options=disable_scrolling" 
-                    frameborder="0" 
-                    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-                    sandbox="allow-forms allow-popups allow-presentation allow-same-origin allow-scripts">
-            </iframe>
-        </div>
-
-        <div class="container">
-            <div class="project-description">
-                <h2>Features</h2>
-                <ul>
-                    <li>Real-time economic data from FRED API</li>
-                    <li>Interactive parameter adjustment for models including ARIMA and XGBoost </li>
-                    <li>Multiple target variables (Energy Consumption, Retail Sales, GDP)</li>
-                    <li>Visual comparison of different forecasting methods</li>
-                    <li>Confidence intervals for predictions</li>
-                </ul>
-
-                <h2>Technical Stack</h2>
-                <ul>
-                    <li>Python with Dash for the web interface</li>
-                    <li>Pandas and NumPy for data manipulation</li>
-                    <li>Statsmodels for ARIMA modeling</li>
-                    <li>XGBoost for machine learning predictions</li>
-                    <li>FRED API for economic data</li>
-                    <li>Plotly for interactive visualizations</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Zain Hameed. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- First load maze.js for the global theme toggle function -->
-    <script src="../js/maze.js"></script>
-    <!-- Simple call to the global theme toggle function -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Use the global theme toggle function from maze.js
-            if (window.setupThemeToggle) {
-                window.setupThemeToggle();
-            }
-        });
-    </script>
+  <header class="site-header">
+    <a class="home" href="../">Zain Hameed</a>
+    <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
+  </header>
+  <main>
+    <div class="page">
+      <h1>Forecasting economic series from FRED</h1>
+      <p class="lede">ARIMA and gradient-boosted models on live Federal Reserve data, side by side.</p>
+      <p class="byline meta">Zain Hameed · 2025</p>
+      <p>Pick a series (energy consumption, retail sales or GDP), adjust the model parameters, and compare how a classical time-series model and a machine-learning model forecast it, with intervals. The data comes straight from the St. Louis Fed's FRED API, so the forecast moves when the data does.</p>
+    </div>
+    <figure class="wide">
+      <div class="embed">
+        <iframe title="Economic forecasting app" loading="lazy"
+          src="https://demand-forecast-app-5gizbzzfqezz5kok6xt9mt.streamlit.app/?embed=true&embed_options=disable_scrolling"
+          sandbox="allow-forms allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+      </div>
+      <figcaption>The app is hosted on Streamlit Community Cloud and may take a few seconds to wake.</figcaption>
+    </figure>
+    <div class="page">
+      <h2>How it works</h2>
+      <ul>
+        <li>Live series from the FRED API; pandas and NumPy for preparation.</li>
+        <li>ARIMA from statsmodels and XGBoost for the machine-learning model, with adjustable parameters.</li>
+        <li>Confidence intervals on every forecast and a direct comparison of the two methods.</li>
+        <li>Plotly for the interactive charts.</li>
+      </ul>
+    </div>
+  </main>
+  <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
 </body>
-</html> 
+</html>

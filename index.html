@@ -1,222 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zain Hameed - Econometrics</title>
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/maze.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            20% { opacity: 0.9; }
-            100% { opacity: 0; }
-        }
-        
-        .wall-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ff9800;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000;
-            animation: fadeOut 7s linear forwards;
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zain Hameed</title>
+  <meta name="description" content="Zain Hameed. Models of how operations actually run, and econometrics to tell which changes worked.">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="js/site.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">ZH</div>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#research">Blog</a>
-            <a href="#contact">Contact</a>
-        </div>
-        <button class="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </button>
+  <header class="site-header">
+    <span></span>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#elsewhere">Contact</a>
+      <button class="mode" type="button" aria-label="Toggle dark mode">Dark</button>
     </nav>
+  </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Zain Hameed</h1>
-            <h2>Economic and Data Analyst</h2>
-            <p class="hero-text">Exploring the intersection of Economics, Math, Biochemistry</p>
-            <div class="social-links">
-                <a href="https://github.com/zainhameedo" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/zain-hameed/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/ZainHameedo" target="_blank"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
+  <main class="page">
+    <section class="intro">
+      <h1>Zain Hameed</h1>
+      <p class="lede">I build models of how operations actually run, and use econometrics to tell which changes worked.</p>
+      <p>For four years I've done that from the inside, as the analyst operators call when a number doesn't make sense: first on grain origination, processing and freight at <a href="https://www.adm.com">ADM</a>, then on Medicare primary care at <a href="https://www.oakstreethealth.com">Oak Street Health</a>. The work is usually the same shape. Find out what the business means by its own words, write that down as data models someone can test, and then answer the question that started it.</p>
+      <p>I studied economics at the University of Michigan. I'm most interested in companies that make physical things, and in the state capacity and industrial base those things depend on.</p>
     </section>
 
-    <section id="maze" class="maze project-detail">
-        <div class="container">
-            <h2>Interactive Pathfinding Maze</h2>
-            <p class="maze-instructions">Click to set start (blue) and end (red) points, then watch the algorithm find the path!</p>
-            <div class="maze-controls">
-                <button id="resetMaze" class="maze-button">Reset Maze</button>
-                <select id="algorithm" class="maze-select">
-                    <option value="bfs">Breadth-First Search</option>
-                    <option value="dfs">Depth-First Search</option>
-                    <option value="aStar">A* Search</option>
-                    <option value="dijkstra">Dijkstra's Algorithm</option>
-                    <option value="greedyBestFirstSearch">Greedy Best-First Search</option>
-                </select>
-                <p class="algorithm-instructions">← Choose an algorithm!</p>
-            </div>
-            
-            <div class="legend">
-                <span class="legend-item"><span class="color-box start"></span>Start</span>
-                <span class="legend-item"><span class="color-box end"></span>End</span>
-                <span class="legend-item"><span class="color-box wall"></span>Wall</span>
-                <span class="legend-item"><span class="color-box path"></span>Path</span>
-            </div>
-            
-            <div id="mazeGrid" class="maze-grid"></div>
-            
-            <div id="algorithmExplanation" class="algorithm-explanation"></div>
-        </div>
-    </section>
+    <h2 class="label section-label" id="work">Selected work</h2>
 
+    <a class="feature" href="materiel/">
+      <svg class="art" viewBox="0 0 640 200" role="img" aria-label="Suppliers connected to parts connected to three products">
+        <g id="art"></g>
+      </svg>
+      <div class="body">
+        <div class="meta">October 2026 · SQLMesh, Iceberg, Flyte, DuckDB, statsmodels, D3</div>
+        <h3>Materiel</h3>
+        <p>A working model of a defense hardware manufacturer, from purchase order to fielded unit. It traces what a supplier failure would stop, ranks the parts most likely to halt production, and shows why the obvious way to evaluate a supplier program gets the sign wrong.</p>
+      </div>
+    </a>
 
-    <section id="about" class="about">
-        <div class="container">
-            <h2>About Me</h2>
-            <div class="about-grid">
-                <div class="about-text">
-                    <p>I'm an analytical thinker with a background in Economics and Biochemistry who thrives at the intersection of data science, business strategy, and financial decision-making. Excited for what's next!</p>
-                    <div class="expertise-areas">
-                        <span class="tag">Economics</span>
-                        <span class="tag">Biochemistry</span>
-                        <span class="tag">Commodity Markets</span>
-                        <span class="tag">History of Technology</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <ul class="entries" style="margin-top:1.75rem">
+      <li>
+        <a class="title" href="projects/economic-forecasting.html">Forecasting economic series from FRED</a>
+        <span class="when">2025</span>
+        <span class="what">ARIMA and gradient-boosted models on live Federal Reserve data, with adjustable parameters and intervals.</span>
+      </li>
+      <li>
+        <a class="title" href="projects/us-pop-density.html">Two centuries of American population density</a>
+        <span class="when">2025</span>
+        <span class="what">County-level density from 1790 to 2020 on an interactive map.</span>
+      </li>
+      <li>
+        <a class="title" href="projects/pathfinding-maze.html">Search algorithms, drawn</a>
+        <span class="when">2025</span>
+        <span class="what">Breadth-first, depth-first, Dijkstra, A* and greedy search on a maze you set up.</span>
+      </li>
+    </ul>
 
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2>Featured Projects</h2>
-            <div class="project-grid">
-                <article class="project-card">
-                    <div class="project-content">
-                        <h3>Interactive Pathfinding Maze</h3>
-                        <p>A visualization of pathfinding algorithms using interactive mazes.</p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">Algorithms</span>
-                        </div>
-                        <a href="projects/pathfinding-maze.html" class="project-link">View Project →</a>
-                    </div>
-                </article>
-                <div class="project-card">
-                    <div class="project-content">
-                        <h3>Live Economic Data Forecasting</h3>
-                        <p>Interactive forecasting tool using ARIMA and XGBoost models to predict economic trends for various economic indicators. Features real-time data from FRED API and interactive parameter adjustment.</p>
-                        <div class="project-tags">
-                            <span class="tag">FRED</span>
-                            <span class="tag">XGBoost</span>
-                            <span class="tag">Economic Signals</span>
-                        </div>
-                        <a href="projects/economic-forecasting.html" class="project-link">View Project →</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-content">
-                        <h3>US Population Density Growth Over Time</h3>
-                        <p>Interactive visualization showing population density changes across US states and counties from 1790 to present day, with time-lapse animation and detailed statistics.</p>
-                        <div class="project-tags">
-                            <span class="tag">Demography</span>
-                            <span class="tag">GeoPandas</span>
-                            <span class="tag">Visual Modeling</span>
-                        </div>
-                        <a href="projects/us-pop-density.html" class="project-link">View Project →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <h2 class="label section-label" id="elsewhere">Elsewhere</h2>
+    <p class="elsewhere">
+      <a href="mailto:zainhameed99@gmail.com">zainhameed99@gmail.com</a>
+      <a href="https://github.com/zainhameedo">GitHub</a>
+      <a href="https://www.linkedin.com/in/zain-hameed/">LinkedIn</a>
+      <a href="https://x.com/ZainHameedo">X</a>
+    </p>
+  </main>
 
-    
-    <section id="research" class="research">
-        <div class="container">
-            <h2>Blog Topics</h2>
-            <div class="research-grid">
-                <div class="research-card">
-                    <h3>Econometrics</h3>
-                    <p>Exploring statistical methods and economic theory to analyze data and make predictions.</p>
-                    <a href="" class="read-more">Coming Soon →</a>
-                </div>
-                <div class="research-card">
-                    <h3>Art, Philosophy, and Science</h3>
-                    <p>Blog about the three lenses of figuring things out.</p> <br>
-                    <a href="" class="read-more">Coming Soon →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
+  <footer class="site-footer">
+    <span>Zain Hameed</span>
+    <span>Based in the United States</span>
+  </footer>
 
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Get in Touch</h2>
-            <div class="contact-content">
-                <div class="contact-text">
-                    <p>Interested in collaboration or have questions about my work? Feel free to reach out.</p>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>zainhameed99@gmail.com</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Based in the United States</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="mailto:zainhameed99@gmail.com" class="contact-button">
-                    <i class="fas fa-paper-plane"></i> Send Message
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Zain Hameed. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Load maze.js with the global theme toggle function -->
-    <script src="js/maze.js"></script>
-    <!-- Call theme toggle setup directly, without waiting for DOMContentLoaded since script is at bottom -->
-    <script>
-        // Call immediately and also on DOMContentLoaded to ensure it runs
-        if (window.setupThemeToggle) {
-            window.setupThemeToggle();
+  <script>
+    // Card art: a small, deterministic sketch of the supply web on the project page.
+    (function () {
+      var g = document.getElementById("art"), ns = "http://www.w3.org/2000/svg";
+      var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+      var S = 22, P = 30, prods = [52, 100, 148];
+      function el(tag, attrs) { var e = document.createElementNS(ns, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); g.appendChild(e); return e; }
+      var ys = [], yp = [];
+      for (var i = 0; i < S; i++) ys.push(16 + i * (168 / (S - 1)));
+      for (var j = 0; j < P; j++) yp.push(16 + j * (168 / (P - 1)));
+      var hot = 9, hotParts = {};
+      for (var s = 0; s < S; s++) {
+        var k = 1 + Math.floor(rnd() * 3);
+        for (var n = 0; n < k; n++) {
+          var p = Math.min(P - 1, Math.max(0, Math.round(s * P / S + (rnd() - 0.5) * 10)));
+          if (s === hot) hotParts[p] = true;
+          el("path", { d: "M150," + ys[s] + " C270," + ys[s] + " 270," + yp[p] + " 390," + yp[p],
+            fill: "none", style: "stroke:" + (s === hot ? "var(--accent)" : "var(--faint)") + ";stroke-opacity:" + (s === hot ? 0.8 : 0.18) });
         }
-        
-        // Also set up when DOM is fully loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            if (window.setupThemeToggle) {
-                window.setupThemeToggle();
-                console.log("Theme toggle setup called from DOMContentLoaded");
-            }
-        });
-    </script>
+      }
+      for (var q = 0; q < P; q++) {
+        var t = prods[Math.floor(q / P * 3)], hp = !!hotParts[q];
+        el("path", { d: "M390," + yp[q] + " C460," + yp[q] + " 460," + t + " 530," + t,
+          fill: "none", style: "stroke:" + (hp ? "var(--accent)" : "var(--faint)") + ";stroke-opacity:" + (hp ? 0.8 : 0.18) });
+      }
+      ys.forEach(function (y, i) { el("rect", { x: 146, y: y - 2, width: 4, height: 4, style: "fill:" + (i === hot ? "var(--accent)" : "var(--faint)") }); });
+      yp.forEach(function (y, i) { el("rect", { x: 387, y: y - 1.5, width: 6, height: 3, style: "fill:" + (hotParts[i] ? "var(--accent)" : "var(--faint)") }); });
+      prods.forEach(function (y) { el("rect", { x: 530, y: y - 18, width: 4, height: 36, style: "fill:var(--ink);opacity:.8" }); });
+    })();
+  </script>
 </body>
 </html>
-
