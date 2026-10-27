@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning by doing · Zain Hameed</title>
+  <meta name="description" content="Solar modules got 500 times cheaper in fifty years, at an almost constant rate per doubling of production. Testing Wright's law out of sample.">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../js/site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="home" href="../">Zain Hameed</a>
+    <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
+  </header>
+  <main>
+    <article>
+      <div class="page">
+        <h1>Learning by doing</h1>
+        <p class="lede">Solar modules got <span data-bind="factor"></span> cheaper in fifty years, at an almost constant rate for every doubling of the amount ever built. Does the rule predict, or only describe?</p>
+        <p class="byline meta">Zain Hameed · October 2026 · Data: IRENA, Nemet, Farmer and Lafond, via Our World in Data</p>
+
+        <p>In 1936 an aeronautical engineer named Theodore Wright noticed that every time his factory's cumulative output of an airplane doubled, the labor needed to build one fell by a roughly constant fraction. The pattern has since been found in dozens of technologies, and it is now called Wright's law. It is a strange kind of regularity: it says costs depend not on time, or on research spending, but on how much of the thing has been made.</p>
+        <p>Solar photovoltaic modules are its cleanest modern case.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="fig-title">Module price against cumulative installed capacity, both on log scales</div>
+          <div class="fig-sub">Each point is a year · hover for detail</div>
+        </div>
+        <div id="wright"></div>
+        <div class="callout" id="callout"></div>
+      </figure>
+
+      <div class="page">
+        <p>On log scales, Wright's law is a straight line, and the line fits fifty years of data with a few wobbles. Each doubling of all the solar capacity ever installed has come with a price cut of about <span data-bind="lr"></span>. Capacity has doubled <span data-bind="doublings"></span> times since 1975.</p>
+        <p>A good fit to history is cheap. Any smooth curve can be bent through fifty points after the fact. The question that matters is whether the line, drawn with only the data available at some point in the past, would have told you where prices were going.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="controls"><span class="fig-sub">Fit the curve on data through</span><div class="seg" id="cut-seg" role="group" aria-label="Fit through"></div></div>
+          <div class="fig-sub">Price per watt, log scale</div>
+        </div>
+        <div id="oos"></div>
+        <div class="legend">
+          <span><i style="background:var(--ink)"></i>Actual price</span>
+          <span><i style="background:var(--accent)"></i>Predicted from the curve, given the capacity that was actually built</span>
+        </div>
+        <figcaption id="oos-cap"></figcaption>
+      </figure>
+
+      <div class="page">
+        <p>Fit on data through 1990 or 2000, the curve predicts the next two decades of prices to within about a quarter, on average, which is impressive for a single number estimated from a young industry. Fit through 2010, it misses badly: prices fell much faster in the 2010s than the old rate implied, as Chinese manufacturing scaled up, and the curve predicted a 2024 price more than twice the real one.</p>
+        <p>Two cautions follow. First, these predictions are conditional: they use the capacity that was actually built, which nobody knew in advance. Wright's law tells you the price if the industry grows, not whether it will. Second, the law is a regularity, not an explanation. David Deutsch makes this point about all such curves: an extrapolation is only as good as the reason behind it. Here the reason is that every factory, every installation and every failed batch teaches someone something, and the lessons accumulate. A regularity with a mechanism behind it can be trusted further than one without. It can still be beaten by people who learn faster than the trend, which is what happened after 2010.</p>
+        <p>The optimistic reading is Deutsch's too. Costs fell five-hundred-fold not because sunlight changed but because knowledge grew. There is no obvious reason the same can't happen to batteries, to nuclear construction or to housing, wherever enough of something is built for the lessons to compound. Where costs instead rise with experience, the curve is evidence that something is stopping the learning.</p>
+
+        <h2>Method</h2>
+        <p class="muted">Global solar PV module prices (constant US dollars per watt) and cumulative installed capacity from Our World in Data, which combines IRENA, Nemet (2009) and Farmer and Lafond (2016). The learning rate is 1 − 2<sup>b</sup>, where b is the slope of log price on log capacity, fit by least squares. Out-of-sample predictions refit b on data through the cutoff year, then predict later prices from later capacity. Built by <a href="https://github.com/zainhameedo/zainhameedo.github.io/blob/main/_build/build_data.py">this script</a>.</p>
+      </div>
+    </article>
+  </main>
+  <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="../js/charts.js"></script>
+  <script>
+  (async function () {
+    const data = await (await fetch("data/learning.json")).json();
+    const { fmt } = Z;
+    const pts = data.solar.map(([yr, p, c]) => ({ yr, p, c }));
+    const first = pts[0], last = pts[pts.length - 1];
+    const doublings = Math.log2(last.c / first.c);
+    Z.bind("factor", fmt.int(Math.round(first.p / last.p / 10) * 10) + " times");
+    Z.bind("lr", fmt.pct(data.fit.lr));
+    Z.bind("doublings", fmt.int(doublings));
+    let cut = "2000";
+    const usd = (v) => (v >= 10 ? "$" + fmt.int(v) : v >= 1 ? "$" + d3.format(".1f")(v) : "$" + d3.format(".2f")(v));
+    const mw = (v) => (v >= 1e6 ? d3.format(".1f")(v / 1e6) + " TW" : v >= 1e3 ? fmt.int(v / 1e3) + " GW" : d3.format(".2~f")(v) + " MW");
+
+    document.getElementById("callout").innerHTML =
+      `<div><b>${fmt.pct(data.fit.lr)}</b><span>price cut per doubling of cumulative capacity</span></div>` +
+      `<div><b>${usd(first.p)} → ${usd(last.p)}</b><span>per watt, ${first.yr} to ${last.yr}, in constant dollars</span></div>` +
+      `<div><b>${mw(first.c)} → ${mw(last.c)}</b><span>cumulative capacity installed</span></div>`;
+
+    function drawWright() {
+      const el = document.getElementById("wright");
+      const { s, W } = Z.svg(el, 0);
+      const H = Math.min(460, Math.max(320, W * 0.45));
+      s.attr("viewBox", `0 0 ${W} ${H}`);
+      const m = { t: 14, r: 20, b: 40, l: 52 };
+      const x = d3.scaleLog().domain([0.3, 4e6]).range([m.l, W - m.r]);
+      const y = d3.scaleLog().domain([0.15, 200]).range([H - m.b, m.t]);
+      const xt = [1, 100, 1e4, 1e6], yt = [0.2, 1, 5, 20, 100];
+      s.append("g").attr("class", "grid").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues(xt).tickSize(-(H - m.t - m.b)).tickFormat(""));
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(yt).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues(xt).tickFormat(mw).tickSizeOuter(0));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(yt).tickFormat(usd).tickSizeOuter(0));
+      s.append("text").attr("x", W - m.r).attr("y", H - 6).attr("text-anchor", "end").text("Cumulative capacity installed →");
+      s.append("text").attr("x", m.l + 6).attr("y", m.t + 10).text("↑ Module price per watt");
+      const f = data.fit, line = (c) => Math.pow(2, f.intercept + f.slope * Math.log2(c));
+      s.append("line").attr("x1", x(0.3)).attr("y1", y(line(0.3))).attr("x2", x(4e6)).attr("y2", y(line(4e6)))
+        .style("stroke", "var(--accent)").style("stroke-width", 1.5).style("stroke-dasharray", "5 4");
+      s.append("path").datum(pts).attr("d", d3.line().x((d) => x(d.c)).y((d) => y(d.p))).attr("fill", "none").style("stroke", "var(--faint)");
+      s.append("g").selectAll("circle").data(pts).join("circle").attr("cx", (d) => x(d.c)).attr("cy", (d) => y(d.p)).attr("r", 3.2)
+        .style("fill", "var(--ink)")
+        .on("mousemove", (ev, d) => Z.tip(`<b>${d.yr}</b><br>${usd(d.p)} per watt<br>${mw(d.c)} installed to date<br>Curve says ${usd(line(d.c))}`, ev))
+        .on("mouseleave", Z.untip);
+      s.append("g").selectAll("text").data(pts.filter((d) => d.yr % 10 === 0 || d.yr === last.yr)).join("text")
+        .attr("x", (d) => x(d.c) + 6).attr("y", (d) => y(d.p) - 6).attr("class", "halo").style("fill", "var(--ink)").style("font-size", "10.5px").text((d) => d.yr);
+    }
+
+    function drawOos() {
+      const el = document.getElementById("oos");
+      const { s, W, H } = Z.svg(el, 300);
+      const m = { t: 12, r: 20, b: 26, l: 52 };
+      const t = data.tests.find((d) => String(d.cut) === cut);
+      const x = d3.scaleLinear().domain([first.yr, last.yr]).range([m.l, W - m.r]);
+      const y = d3.scaleLog().domain([0.15, 200]).range([H - m.b, m.t]);
+      const yt = [0.2, 1, 5, 20, 100];
+      s.append("rect").attr("x", x(t.cut)).attr("width", x(last.yr) - x(t.cut)).attr("y", m.t).attr("height", H - m.t - m.b).style("fill", "var(--wash)");
+      s.append("text").attr("x", x(t.cut) + 6).attr("y", m.t + 12).text(`after ${t.cut}: the curve hasn't seen this`);
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(yt).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(yt).tickFormat(usd).tickSize(0)).select(".domain").remove();
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(8).tickFormat(d3.format("d")).tickSizeOuter(0));
+      s.append("path").datum(pts).attr("d", d3.line().x((d) => x(d.yr)).y((d) => y(d.p))).attr("fill", "none").style("stroke", "var(--ink)").style("stroke-width", 2);
+      const pred = t.pred.map(([yr, p]) => ({ yr, p }));
+      s.append("path").datum(pred).attr("d", d3.line().x((d) => x(d.yr)).y((d) => y(d.p))).attr("fill", "none")
+        .style("stroke", "var(--accent)").style("stroke-width", 2).style("stroke-dasharray", "5 3");
+      const lastPred = pred[pred.length - 1];
+      s.append("text").attr("x", x(lastPred.yr) - 4).attr("y", y(lastPred.p) - 8).attr("text-anchor", "end").style("fill", "var(--accent)")
+        .attr("class", "halo").text(`predicted ${usd(lastPred.p)}`);
+      s.append("text").attr("x", x(last.yr) - 4).attr("y", y(last.p) + 16).attr("text-anchor", "end").style("fill", "var(--ink)")
+        .attr("class", "halo").text(`actual ${usd(last.p)}`);
+      document.getElementById("oos-cap").innerHTML = `<b>Fit through ${t.cut}:</b> learning rate ${fmt.pct(t.lr)} per doubling. ` +
+        `Average error on the years after, ${fmt.pct(t.mape)} of the actual price.`;
+    }
+
+    Z.seg(document.getElementById("cut-seg"), data.tests.map((t) => [String(t.cut), String(t.cut)]), cut, (v) => { cut = v; drawOos(); });
+    drawWright(); drawOos();
+    Z.onResize(() => { drawWright(); drawOos(); });
+  })();
+  </script>
+</body>
+</html>

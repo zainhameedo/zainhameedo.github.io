@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Search algorithms, drawn · Zain Hameed</title>
+  <title>What a heuristic knows · Zain Hameed</title>
+  <meta name="description" content="Five search algorithms race through the same maze. The difference between them is how much they know about where they're going.">
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,32 +18,44 @@
     <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
   </header>
   <main>
-    <div class="page">
-      <h1>Search algorithms, drawn</h1>
-      <p class="lede">Five ways to find a path through a maze, animated step by step.</p>
-      <p class="byline meta">Zain Hameed · 2025</p>
-      <p>Click once to place the start and again to place the end, then pick an algorithm. Breadth-first search and Dijkstra find the shortest path by brute patience; A* finds it faster by guessing well; greedy search guesses and doesn't check; depth-first search wanders.</p>
-      <div class="maze-controls">
-        <button id="resetMaze" class="maze-button" type="button">New maze</button>
-        <select id="algorithm" aria-label="Algorithm">
-          <option value="bfs">Breadth-first search</option>
-          <option value="dfs">Depth-first search</option>
-          <option value="aStar">A* search</option>
-          <option value="dijkstra">Dijkstra's algorithm</option>
-          <option value="greedyBestFirstSearch">Greedy best-first search</option>
-        </select>
+    <article>
+      <div class="page">
+        <h1>What a heuristic knows</h1>
+        <p class="lede">Five search algorithms race through the same maze. The difference between them is how much they know about where they're going.</p>
+        <p class="byline meta">Zain Hameed · 2025, rewritten October 2026</p>
+
+        <p>Every search algorithm is a policy for what to look at next. The maze below has walls, open ground, and shaded patches of rough ground that cost five times as much to cross. Each algorithm starts in the top-left corner and wants the cheapest route to the bottom-right. They take turns, one cell each per tick, so you can compare how much each one had to look at.</p>
       </div>
-      <div id="mazeGrid" class="maze-grid"></div>
-      <div class="legend">
-        <span><i class="start"></i>Start</span>
-        <span><i class="end"></i>End</span>
-        <span><i class="wall"></i>Wall</span>
-        <span><i class="path"></i>Path</span>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="controls">
+            <button class="play" type="button" id="run">Run</button>
+            <button class="play" type="button" id="new">New maze</button>
+            <label class="range" style="min-width:200px">Speed <input type="range" id="speed" min="1" max="12" value="3" aria-label="Speed"></label>
+          </div>
+          <div class="fig-sub">Click any panel to add or remove a wall</div>
+        </div>
+        <div class="race" id="race"></div>
+        <div class="legend">
+          <span><i style="background:var(--blue-soft)"></i>Searched</span>
+          <span><i style="background:var(--blue);opacity:.5"></i>Queued to search</span>
+          <span><i style="background:var(--wash);box-shadow:inset 0 0 0 1px var(--rule)"></i>Rough ground, cost 5</span>
+          <span><i style="background:var(--accent)"></i>Route found</span>
+        </div>
+        <figcaption id="summary"></figcaption>
+      </figure>
+
+      <div class="page">
+        <p>Breadth-first search knows nothing about the problem, so it treats every direction alike and floods outward. It finds the route with the fewest steps, which is not the cheapest when the shortest route crosses rough ground. Dijkstra's algorithm knows what each step costs and floods by cost instead of by steps, so it always finds the cheapest route, after searching most of the maze to be sure.</p>
+        <p>Greedy best-first search knows where the goal is and nothing else. It heads straight there, which is fast, and takes whatever route that produces, which is often expensive. Depth-first search commits to a corridor and backs out only when it hits a wall. On some mazes it gets lucky.</p>
+        <p>A* combines the two kinds of knowledge. It ranks each cell by the cost of reaching it plus a guess at the remaining distance, and the guess obeys one rule: it may never exceed the true remaining cost. Here the guess is the grid distance to the goal, which can't overestimate because no step costs less than one. That rule lets A* skip cells that can't lie on a cheaper route and still guarantee the cheapest one. How much it skips depends on how good the guess is. In open country the savings are large. In a maze full of dead ends they're smaller, often a third and sometimes almost nothing, because the straight-line distance keeps pointing at walls.</p>
+        <p>David Deutsch argues that knowledge is what lets you avoid trying everything. A heuristic is a small piece of knowledge about where the answer is likely to be, and the admissibility rule is what keeps it honest. Greedy search has knowledge without that discipline: it's confident, and often wrong. Breadth-first and Dijkstra have discipline without knowledge, so they're thorough and slow. A* has both. It never does worse than Dijkstra, and it does better exactly in proportion to how much its guess actually knows.</p>
+        <p class="muted">Mazes are carved by randomized depth-first search, then about a fifth of the interior walls are removed so that there are many routes. The algorithms are written from scratch in <a href="search.js">search.js</a>, with a binary heap for the priority queues. An earlier version of this page animated each algorithm alone; running them together makes the comparison the point.</p>
       </div>
-      <div id="algorithmExplanation" class="algorithm-explanation"></div>
-    </div>
+    </article>
   </main>
   <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
-  <script src="../js/maze.js"></script>
+  <script src="search.js"></script>
 </body>
 </html>

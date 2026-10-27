@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Forecasting economic series · Zain Hameed</title>
+  <title>Forecasts that can be wrong · Zain Hameed</title>
+  <meta name="description" content="Twenty-five years of economic forecasts, each made with only the data available at the time, scored against the simplest possible guess.">
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,30 +18,134 @@
     <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
   </header>
   <main>
-    <div class="page">
-      <h1>Forecasting economic series from FRED</h1>
-      <p class="lede">ARIMA and gradient-boosted models on live Federal Reserve data, side by side.</p>
-      <p class="byline meta">Zain Hameed · 2025</p>
-      <p>Pick a series (energy consumption, retail sales or GDP), adjust the model parameters, and compare how a classical time-series model and a machine-learning model forecast it, with intervals. The data comes straight from the St. Louis Fed's FRED API, so the forecast moves when the data does.</p>
-    </div>
-    <figure class="wide">
-      <div class="embed">
-        <iframe title="Economic forecasting app" loading="lazy"
-          src="https://demand-forecast-app-5gizbzzfqezz5kok6xt9mt.streamlit.app/?embed=true&embed_options=disable_scrolling"
-          sandbox="allow-forms allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+    <article>
+      <div class="page">
+        <h1>Forecasts that can be wrong</h1>
+        <p class="lede">Twenty-five years of economic forecasts, each made with only the data available at the time, scored against the simplest possible guess.</p>
+        <p class="byline meta">Zain Hameed · 2025, rewritten October 2026 · Data: FRED</p>
+
+        <p>The earlier version of this page fit forecasting models to the whole history of a series and showed how well they tracked it. That is the easy test, and it proves very little. A model that has already seen the answer will always look good. Popper's point applies: a claim earns its keep only by surviving a test it could have failed.</p>
+        <p>So here is the hard test. For every month from January 2000 on, I fit a model using only the data published up to that month, forecast the next one to twelve months, and wait to see what happened. The model is an autoregression on the level of the series, refit at every step. It competes with two forecasts that need no model at all: <em>no change</em>, which says next year looks like this month, and the <em>ten-year average</em>.</p>
       </div>
-      <figcaption>The app is hosted on Streamlit Community Cloud and may take a few seconds to wake.</figcaption>
-    </figure>
-    <div class="page">
-      <h2>How it works</h2>
-      <ul>
-        <li>Live series from the FRED API; pandas and NumPy for preparation.</li>
-        <li>ARIMA from statsmodels and XGBoost for the machine-learning model, with adjustable parameters.</li>
-        <li>Confidence intervals on every forecast and a direct comparison of the two methods.</li>
-        <li>Plotly for the interactive charts.</li>
-      </ul>
-    </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="seg" id="series-seg" role="group" aria-label="Series"></div>
+          <div class="fig-sub">Each point is a forecast made twelve months earlier · hover for the month it was made</div>
+        </div>
+        <div id="path-canvas"></div>
+        <div class="legend">
+          <span><i style="background:var(--ink)"></i>What happened</span>
+          <span><i style="background:var(--accent)"></i>Model, forecast 12 months ahead</span>
+          <span><i style="background:var(--faint)"></i>No change, 12 months ahead</span>
+        </div>
+      </figure>
+
+      <div class="page">
+        <p>Pick unemployment and look at 2020. In April 2020 unemployment hit 14.8%, and the model, which had learned from sixty years of slow-moving data, did the arithmetic it was built to do: it forecast <span data-bind="covid"></span> unemployment a year later. The answer was 6.1%. The "no change" forecast was also badly wrong, but only by the size of the shock, not by multiples of it.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="fig-title">Average forecast error (root mean squared, percentage points)</div>
+          <div class="seg" id="period-seg" role="group" aria-label="Period"></div>
+        </div>
+        <div id="table"></div>
+      </figure>
+
+      <div class="page">
+        <h2>What survives</h2>
+        <ul>
+          <li><b>The federal funds rate is close to unforecastable by this kind of model.</b> "No change" beats it about two months in three, because the rate moves in discrete steps that a committee announces, and nothing in the rate's own history says when.</li>
+          <li><b>Inflation is forecastable a few months out and not much beyond.</b> The model beats "no change" at one and three months. At a year, the plain ten-year average beats both: inflation does revert, more slowly than the model expects and faster than "no change" assumes.</li>
+          <li><b>Industrial production is where the model earns its keep,</b> beating "no change" at every horizon, because growth rates swing and then settle. Even here, a year out, the ten-year average is about as good.</li>
+          <li><b>Unemployment is a story about one month.</b> Excluding 2020 and 2021, the model edges out "no change" at every horizon. Including them, it loses badly. Which of those numbers you report is a choice, and it should be made before seeing the results, not after.</li>
+        </ul>
+        <p>The general lesson is old and still neglected. Most of what is forecastable in these series is persistence, which a naive guess captures for free. A forecasting method should be judged by how much it adds to that, out of sample, and the answer is usually "a little, sometimes." That is not a reason to stop forecasting. It is a reason to show the benchmark every time.</p>
+
+        <h2>Method</h2>
+        <p class="muted">Monthly data from FRED: unemployment rate (UNRATE), CPI inflation computed as the 12-month change in CPIAUCSL, industrial production growth as the 12-month change in INDPRO, and the effective federal funds rate (FEDFUNDS). The model is an AR(13) with a constant (AR(4) for the funds rate) fit by least squares on all data from 1960 to the forecast origin, refit every month; multi-step forecasts are iterated. Data revisions are ignored: the model sees today's vintage of past data, which flatters it slightly. The build script is in <a href="https://github.com/zainhameedo/zainhameedo.github.io/blob/main/_build/build_data.py">the site repository</a>.</p>
+      </div>
+    </article>
   </main>
   <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="../js/charts.js"></script>
+  <script>
+  (async function () {
+    const data = await (await fetch("data/forecasts.json")).json();
+    const { fmt } = Z;
+    const parse = d3.timeParse("%Y-%m");
+    let key = "unrate", period = "all";
+
+    function drawPath() {
+      const el = document.getElementById("path-canvas");
+      const { s, W, H } = Z.svg(el, 340);
+      const m = { t: 12, r: 16, b: 26, l: 40 };
+      const S = data.series[key];
+      const act = S.actual.map(([d, v]) => ({ d: parse(d), v })).filter((p) => p.d >= parse("1999-01"));
+      const f = S.f12.map(([o, t, a, w]) => ({ o: parse(o), d: parse(t), a, w }));
+      const vals = act.map((p) => p.v).concat(f.map((p) => p.w));
+      let lo = d3.min(vals), hi = d3.max(vals);
+      const pad = (hi - lo) * 0.12;
+      const x = d3.scaleTime().domain(d3.extent(act, (p) => p.d)).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([lo - pad, hi + pad]).range([H - m.b, m.t]).nice();
+      const clip = (v) => Math.max(y.domain()[0], Math.min(y.domain()[1], v));
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(0).tickFormat((v) => v + "%")).select(".domain").remove();
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(W > 600 ? 10 : 5).tickSizeOuter(0));
+      if (y.domain()[0] < 0) s.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(0)).attr("y2", y(0)).style("stroke", "var(--faint)");
+      s.append("path").datum(f).attr("d", d3.line().x((p) => x(p.d)).y((p) => y(p.w)).curve(d3.curveStepAfter))
+        .attr("fill", "none").style("stroke", "var(--faint)").style("stroke-width", 1.25).style("stroke-dasharray", "3 2");
+      s.append("path").datum(act).attr("d", d3.line().x((p) => x(p.d)).y((p) => y(p.v)))
+        .attr("fill", "none").style("stroke", "var(--ink)").style("stroke-width", 1.75);
+      const off = f.filter((p) => p.a !== clip(p.a));
+      s.append("g").selectAll("circle").data(f).join("circle")
+        .attr("cx", (p) => x(p.d)).attr("cy", (p) => y(clip(p.a))).attr("r", 1.8)
+        .style("fill", "var(--accent)").style("opacity", 0.8);
+      s.append("g").selectAll("path").data(off).join("path")
+        .attr("d", (p) => `M${x(p.d) - 3},${y(clip(p.a)) + (p.a > 0 ? 5 : -5)} l3,${p.a > 0 ? -5 : 5} l3,${p.a > 0 ? 5 : -5}`)
+        .attr("fill", "none").style("stroke", "var(--accent)");
+      const actBy = new Map(act.map((p) => [+p.d, p.v]));
+      const focus = s.append("line").attr("y1", m.t).attr("y2", H - m.b).style("stroke", "var(--faint)").style("opacity", 0);
+      s.append("rect").attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b).style("fill", "transparent")
+        .on("mousemove", function (ev) {
+          const [mx] = d3.pointer(ev, this);
+          const i = d3.bisector((p) => p.d).center(f, x.invert(mx));
+          const p = f[i];
+          focus.attr("x1", x(p.d)).attr("x2", x(p.d)).style("opacity", 1);
+          Z.tip(`<b>${fmt.month(p.d)}</b><br>Actual ${fmt.d1(actBy.get(+p.d))}%<br>` +
+            `Model, made ${fmt.month(p.o)}: ${fmt.d1(p.a)}%<br>No change: ${fmt.d1(p.w)}%`, ev);
+        })
+        .on("mouseleave", () => { focus.style("opacity", 0); Z.untip(); });
+    }
+
+    function drawTable() {
+      const rows = [];
+      for (const [k, S] of Object.entries(data.series)) {
+        for (const t of S.table) {
+          const vals = period === "all" ? { rw: t.rw, ar: t.ar, mean: t.mean } : { rw: t.rw_calm, ar: t.ar_calm, mean: null };
+          rows.push({ k, label: S.label, ...t, vals });
+        }
+      }
+      const head = `<tr><th>Series</th><th>Horizon</th><th>No change</th><th>Model</th>${period === "all" ? "<th>10-year average</th><th>Model beats no change</th>" : ""}</tr>`;
+      const body = rows.map((r, i) => {
+        const v = r.vals, cands = [v.rw, v.ar, v.mean].filter((x) => x != null), best = Math.min(...cands);
+        const cell = (x) => (x == null ? "" : `<td class="${x === best ? "best" : ""}">${fmt.d2(x)}</td>`);
+        const first = i === 0 || rows[i - 1].k !== r.k;
+        return `<tr><td>${first ? r.label : ""}</td><td>${r.h} mo</td>${cell(v.rw)}${cell(v.ar)}${period === "all" ? cell(v.mean) + `<td class="dim">${fmt.pct(r.ar_wins)} of months</td>` : ""}</tr>`;
+      }).join("");
+      document.getElementById("table").innerHTML = `<table class="tbl">${head}${body}<caption>Lowest error in each row in bold. Forecasts made monthly, January 2000 onward.${period === "calm" ? " Targets from March 2020 through December 2021 excluded." : ""}</caption></table>`;
+    }
+
+    Z.seg(document.getElementById("series-seg"), Object.entries(data.series).map(([k, s]) => [k, s.label.replace(", 12-month growth", "").replace(", 12-month", "")]), key, (v) => { key = v; drawPath(); });
+    Z.seg(document.getElementById("period-seg"), [["all", "2000 to now"], ["calm", "Excluding 2020–21"]], period, (v) => { period = v; drawTable(); });
+    const covid = data.series.unrate.f12.find((r) => r[0] === "2020-04");
+    Z.bind("covid", covid ? fmt.d1(covid[2]) + "%" : "");
+    drawPath(); drawTable();
+    Z.onResize(drawPath);
+  })();
+  </script>
 </body>
 </html>

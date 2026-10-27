@@ -289,6 +289,7 @@ svg text { font-family: var(--sans); fill: var(--muted); font-size: 11px; font-v
 svg text.halo, #est-canvas text { paint-order: stroke; stroke: var(--paper); stroke-width: 4px; stroke-linejoin: round; }
 .axis text { fill: var(--faint); }
 .grid line { stroke: var(--rule); stroke-dasharray: 2 3; }
+.grid .domain { display: none; }
 .tip {
   position: fixed;
   pointer-events: none;
@@ -408,4 +409,48 @@ svg text.halo, #est-canvas text { paint-order: stroke; stroke: var(--paper); str
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+}
+
+/* Project pages ----------------------------------------------------------- */
+
+.tbl { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+.tbl th { text-align: right; font-weight: 500; color: var(--muted); padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--ink); white-space: nowrap; }
+.tbl th:first-child, .tbl td:first-child { text-align: left; }
+.tbl td { text-align: right; padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--rule); }
+.tbl td.best { font-weight: 600; color: var(--ink); }
+.tbl td.dim { color: var(--faint); }
+.tbl caption { caption-side: bottom; text-align: left; color: var(--muted); font-size: 0.75rem; padding-top: 0.6rem; }
+
+.range { display: flex; align-items: center; gap: 0.75rem; font-family: var(--sans); font-size: 0.8125rem; color: var(--muted); }
+.range input[type="range"] { flex: 1; accent-color: var(--accent); }
+.range output { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 3.5rem; font-weight: 600; }
+.play { font: inherit; font-family: var(--sans); font-size: 0.8125rem; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 0.35rem 0.7rem; cursor: pointer; }
+
+.callout { font-family: var(--sans); display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin: 1rem 0 0; }
+.callout div { background: var(--paper); padding: 0.8rem 0.9rem; }
+.callout b { display: block; font-weight: 500; font-size: 1.375rem; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.callout span { font-size: 0.75rem; color: var(--muted); }
+
+.race { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem 1rem; }
+.race .lane-title { font-family: var(--sans); font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.15rem; }
+.race .lane-stat { font-family: var(--sans); font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 0.4rem; min-height: 2.3em; }
+.race canvas { width: 100%; height: auto; display: block; border: 1px solid var(--rule); border-radius: 4px; cursor: crosshair; image-rendering: pixelated; }
+
+.pull { font-size: 1.375rem; line-height: 1.45; margin: 2rem 0; padding: 0 0 0 1.1rem; border-left: 2px solid var(--accent); }
+.pull cite { display: block; font-style: normal; font-family: var(--sans); font-size: 0.8125rem; color: var(--muted); margin-top: 0.4rem; }
+
+@media (max-width: 860px) {
+  .race { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .callout { grid-template-columns: 1fr; }
+}
+
+/* Narrow screens: let button groups wrap and wide tables scroll inside their figure. */
+.seg { flex-wrap: wrap; max-width: 100%; }
+.fig-head { min-width: 0; }
+.fig-head > * { min-width: 0; max-width: 100%; }
+#table, #bands { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 560px) {
+  .seg button { padding: 0.3rem 0.45rem; }
+  .tbl { font-size: 0.75rem; }
+  .tbl th, .tbl td { padding: 0.35rem 0.4rem; }
 }

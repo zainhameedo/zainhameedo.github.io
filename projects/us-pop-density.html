@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>American population density · Zain Hameed</title>
+  <title>Where Americans went · Zain Hameed</title>
+  <meta name="description" content="125 years of state populations, and the slow walk of the country's center of population from Indiana into the Missouri Ozarks.">
   <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,32 +18,161 @@
     <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
   </header>
   <main>
-    <div class="page">
-      <h1>Two centuries of American population density</h1>
-      <p class="lede">County-level density from 1790 to 2020, on a map you can move through decade by decade.</p>
-      <p class="byline meta">Zain Hameed · 2025</p>
-      <p>The map uses the Census Bureau's 2019 American Community Survey as a baseline and models earlier decades with exponential decay, so it is an estimate of the shape of settlement rather than a census of each county in each year. Drag the timeline to watch density spread west and concentrate in cities.</p>
-    </div>
-    <figure class="wide">
-      <div class="shot"><img src="../assets/images/us_population_density_map_app.gif" alt="Animated map of US county population density, 1790 to 2020"></div>
-    </figure>
-    <figure class="wide">
-      <div class="embed">
-        <iframe title="Population density app" loading="lazy"
-          src="https://population-density-map-app-nqsjwklrkzsngxfuuytds8.streamlit.app/?embed=true&embed_options=disable_scrolling"
-          sandbox="allow-forms allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+    <article>
+      <div class="page">
+        <h1>Where Americans went</h1>
+        <p class="lede">125 years of state populations, and the slow walk of the country's center of population from Indiana into the Missouri Ozarks.</p>
+        <p class="byline meta">Zain Hameed · 2025, rewritten October 2026 · Data: Census Bureau via FRED</p>
+
+        <p>Thomas Sowell spent much of his career pointing out that people's movements are a better record of what they value than anything they say. Nobody files a report explaining why they left Buffalo for Phoenix. They pack, and the census counts them at the other end.</p>
+        <p>The map below is that record for the twentieth century and after. Each circle is a state, placed at the point where its own population is centered and sized by its population in the chosen year. The dark path traces the population-weighted center of the whole country.</p>
       </div>
-      <figcaption>The app is hosted on Streamlit Community Cloud and may take a few seconds to wake.</figcaption>
-    </figure>
-    <div class="page">
-      <h2>How it works</h2>
-      <ul>
-        <li>Baseline population from the Census Bureau's ACS API; county shapes in an Albers equal-area projection with GeoPandas.</li>
-        <li>Earlier decades modeled with exponential decay from the baseline.</li>
-        <li>A county choropleth in Plotly, with hover detail and PNG export; geometry and data cached locally for speed.</li>
-      </ul>
-    </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="range" style="flex:1;min-width:280px">
+            <button class="play" type="button" id="play">Play</button>
+            <input type="range" id="year" min="1900" max="2025" step="1" value="2025" aria-label="Year">
+            <output id="year-out">2025</output>
+          </div>
+        </div>
+        <div id="map"></div>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i>Larger share of the US than in 1900</span>
+          <span><i style="background:var(--blue)"></i>Smaller share</span>
+          <span><i style="background:var(--ink)"></i>Center of population, by year</span>
+        </div>
+        <figcaption>Alaska and Hawaii enter the series in 1950. The center is the population-weighted average of each state's 2020 center of population; for 2020 it lands about 5 km from the Census Bureau's official figure near Hartville, Missouri (37.416° N, 92.347° W), which is computed from every census block.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p>The center moved <span data-bind="dist"></span> west and <span data-bind="south"></span> south in 125 years, about <span data-bind="pace"></span> a year. For the first half of the century it moved almost due west, across Illinois, as the whole country filled in. After about 1950 it bends south, and the bend is the interesting part.</p>
+
+        <h2>Who gained, who lost</h2>
+        <p>Share of the national population is the right measure here, since nearly every state grew in absolute terms. What matters is where each additional American chose to live.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="fig-title">Change in share of US population, 1900 to 2025, percentage points</div>
+          <div class="fig-sub">The lower 48 and DC; Alaska and Hawaii have no 1900 figure</div>
+        </div>
+        <div id="bars"></div>
+      </figure>
+
+      <div class="page">
+        <p>California alone gained nearly ten points of national share; Florida and Texas six and five. Pennsylvania, New York, Illinois and Ohio together gave up almost thirteen. None of it was planned. No agency decided that the country's weight should shift to the Sun Belt; millions of households decided it, one move at a time.</p>
+        <p>What changed was the set of things people could take with them. Air conditioning made Southern summers tolerable. The interstate highways cut the cost of putting a factory somewhere cheap. Later, housing costs did the sorting: people moved toward places where they could afford to live, which more and more meant places that allowed building. The center of population is, among other things, a slow measure of where it was legal to put a house.</p>
+
+        <h2>What this measure misses</h2>
+        <ul>
+          <li>States are coarse. The movement from city cores to suburbs, the largest migration of the century, happens almost entirely inside states and doesn't show here.</li>
+          <li>Net change mixes migration with births, deaths and immigration. A state can lose share because people leave, or because it has fewer births and draws fewer immigrants. Separating those needs flows, not stocks.</li>
+          <li>Each state's position is its 2020 center. Michigan's center in 1900 was not where it is now, but the error that introduces is small next to the shifts between states.</li>
+        </ul>
+
+        <p class="muted">Annual resident population by state from the Census Bureau (FRED series such as CAPOP), state centers of population from the Census Bureau's 2020 Centers of Population file. Built by <a href="https://github.com/zainhameedo/zainhameedo.github.io/blob/main/_build/build_data.py">this script</a>. An earlier version of this page modeled county density back to 1790 by assuming exponential growth; this one uses only counted data.</p>
+      </div>
+    </article>
   </main>
   <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  <script src="../js/charts.js"></script>
+  <script>
+  (async function () {
+    const [data, us] = await Promise.all([
+      fetch("data/migration.json").then((r) => r.json()),
+      fetch("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json").then((r) => r.json()),
+    ]);
+    const { fmt } = Z;
+    const years = data.years;
+    const i1900 = years.indexOf(1900);
+    const total = (i) => d3.sum(data.states, (s) => s.pop[i] || 0);
+    const share = (s, i) => (s.pop[i] || 0) / total(i);
+    const delta = new Map(data.states.map((s) => [s.id, share(s, years.length - 1) - share(s, i1900)]));
+    let year = 2025, timer = null;
+
+    // Distance travelled by the center (haversine, km).
+    const t0 = data.track[0], t1 = data.track[data.track.length - 1];
+    const km = (a, b) => d3.geoDistance([a.lon, a.lat], [b.lon, b.lat]) * 6371;
+    Z.bind("dist", fmt.int(km(t0, { lat: t0.lat, lon: t1.lon })) + " km");
+    Z.bind("south", fmt.int(km(t0, { lat: t1.lat, lon: t0.lon })) + " km");
+    Z.bind("pace", fmt.d1(km(t0, t1) / (t1.year - t0.year)) + " km");
+
+    function drawMap() {
+      const el = document.getElementById("map");
+      const { s, W, H } = Z.svg(el, 0, 320);
+      const height = Math.round(W * 0.6);
+      s.attr("viewBox", `0 0 ${W} ${height}`);
+      const states = topojson.feature(us, us.objects.states);
+      const proj = d3.geoAlbersUsa().fitExtent([[10, 10], [W - 10, height - 10]], states);
+      const path = d3.geoPath(proj);
+      s.append("g").selectAll("path").data(states.features).join("path").attr("d", path)
+        .style("fill", "var(--wash)").style("stroke", "var(--rule)").style("stroke-width", 0.75);
+
+      const i = years.indexOf(year);
+      const maxPop = d3.max(data.states, (st) => d3.max(st.pop));
+      const r = d3.scaleSqrt().domain([0, maxPop]).range([0, Math.min(46, W / 22)]);
+      const pts = data.states.map((st) => ({ ...st, xy: proj([st.lon, st.lat]), p: st.pop[i] })).filter((d) => d.xy && d.p);
+      s.append("g").selectAll("circle").data(pts.sort((a, b) => b.p - a.p)).join("circle")
+        .attr("cx", (d) => d.xy[0]).attr("cy", (d) => d.xy[1]).attr("r", (d) => r(d.p))
+        .style("fill", (d) => (delta.get(d.id) >= 0 ? "var(--accent)" : "var(--blue)"))
+        .style("fill-opacity", 0.32)
+        .style("stroke", (d) => (delta.get(d.id) >= 0 ? "var(--accent)" : "var(--blue)"))
+        .style("stroke-width", 1)
+        .on("mousemove", (ev, d) => Z.tip(`<b>${d.name}, ${year}</b><br>${fmt.int(d.p * 1000)} people<br>${fmt.pct1(d.p / total(i))} of the US` +
+          `<br>1900 to 2025: ${fmt.pp(100 * delta.get(d.id))} points of share`, ev))
+        .on("mouseleave", Z.untip);
+
+      const track = data.track.filter((t) => t.year <= year).map((t) => ({ ...t, xy: proj([t.lon, t.lat]) }));
+      s.append("path").datum(track).attr("d", d3.line().x((t) => t.xy[0]).y((t) => t.xy[1]))
+        .attr("fill", "none").style("stroke", "var(--ink)").style("stroke-width", 2);
+      s.append("g").selectAll("circle").data(track.filter((t) => t.year % 25 === 0)).join("circle")
+        .attr("cx", (t) => t.xy[0]).attr("cy", (t) => t.xy[1]).attr("r", 2.5).style("fill", "var(--ink)");
+      s.append("g").selectAll("text").data(track.filter((t) => t.year % 25 === 0)).join("text")
+        .attr("x", (t) => t.xy[0]).attr("y", (t) => t.xy[1] - 7).attr("text-anchor", "middle")
+        .style("fill", "var(--ink)").style("font-size", "10px").attr("class", "halo").text((t) => t.year);
+      const last = track[track.length - 1];
+      s.append("circle").attr("cx", last.xy[0]).attr("cy", last.xy[1]).attr("r", 5)
+        .style("fill", "var(--paper)").style("stroke", "var(--ink)").style("stroke-width", 2);
+    }
+
+    function drawBars() {
+      const el = document.getElementById("bars");
+      const rows = data.states.filter((st) => st.pop[i1900]).map((st) => ({ ...st, d: 100 * delta.get(st.id) }))
+        .sort((a, b) => b.d - a.d);
+      const rowH = 14;
+      const { s, W } = Z.svg(el, rows.length * rowH + 24);
+      const m = { l: 120, r: 50 };
+      const x = d3.scaleLinear().domain(d3.extent(rows, (d) => d.d)).nice().range([m.l, W - m.r]);
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${rows.length * rowH + 4})`)
+        .call(d3.axisBottom(x).ticks(6).tickFormat((v) => (v > 0 ? "+" : "") + v).tickSizeOuter(0));
+      s.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 0).attr("y2", rows.length * rowH).style("stroke", "var(--faint)");
+      const g = s.append("g").selectAll("g").data(rows).join("g").attr("transform", (d, i) => `translate(0,${i * rowH})`);
+      g.append("rect").attr("x", (d) => Math.min(x(0), x(d.d))).attr("width", (d) => Math.abs(x(d.d) - x(0))).attr("y", 2).attr("height", rowH - 4)
+        .style("fill", (d) => (d.d >= 0 ? "var(--accent)" : "var(--blue)")).style("opacity", 0.8);
+      g.append("text").attr("x", m.l - 8).attr("y", rowH / 2 + 3.5).attr("text-anchor", "end").style("font-size", "10.5px").text((d) => d.name);
+      g.append("text").attr("x", (d) => (d.d >= 0 ? x(d.d) + 4 : x(d.d) - 4)).attr("y", rowH / 2 + 3.5)
+        .attr("text-anchor", (d) => (d.d >= 0 ? "start" : "end")).style("font-size", "10px").text((d) => fmt.pp(d.d));
+    }
+
+    const input = document.getElementById("year"), out = document.getElementById("year-out"), play = document.getElementById("play");
+    function setYear(y) { year = +y; input.value = year; out.textContent = year; drawMap(); }
+    input.addEventListener("input", () => setYear(input.value));
+    play.addEventListener("click", () => {
+      if (timer) { clearInterval(timer); timer = null; play.textContent = "Play"; return; }
+      if (year >= 2025) setYear(1900);
+      play.textContent = "Pause";
+      timer = setInterval(() => {
+        if (year >= 2025) { clearInterval(timer); timer = null; play.textContent = "Play"; return; }
+        setYear(year + 1);
+      }, 70);
+    });
+    drawMap(); drawBars();
+    Z.onResize(() => { drawMap(); drawBars(); });
+  })();
+  </script>
 </body>
 </html>

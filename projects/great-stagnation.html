@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The great stagnation, measured · Zain Hameed</title>
+  <meta name="description" content="American productivity grew 2.8% a year for a quarter century after the war, then about half that. What the gap adds up to.">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../js/site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="home" href="../">Zain Hameed</a>
+    <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
+  </header>
+  <main>
+    <article>
+      <div class="page">
+        <h1>The great stagnation, measured</h1>
+        <p class="lede">American productivity grew 2.8% a year for a quarter century after the war, then about half that. What the gap adds up to.</p>
+        <p class="byline meta">Zain Hameed · October 2026 · Data: Bureau of Labor Statistics and BEA via FRED, Penn World Table</p>
+
+        <p>In 2011 Tyler Cowen argued that the United States had spent the twentieth century harvesting low-hanging fruit: free land, a backlog of transformative inventions, and a population that could be sent to school for the first time. By the 1970s most of that fruit had been eaten, and growth slowed. The argument was controversial, but its central number is not. Here it is.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="fig-title">Output per hour worked, US nonfarm business sector</div>
+          <div class="fig-sub">Index, 2017 = 100, log scale · annual growth by era</div>
+        </div>
+        <div id="lp"></div>
+        <div class="legend">
+          <span><i style="background:var(--ink)"></i>Actual</span>
+          <span><i style="background:transparent;border-top:1.5px dashed var(--accent);height:0;border-radius:0;width:14px"></i>If the 1948–73 pace had continued</span>
+        </div>
+      </figure>
+
+      <div class="page">
+        <p>On a log scale, a constant growth rate is a straight line, and the chart is two slopes with a detour. From 1948 to 1973 output per hour grew <span data-bind="g0"></span> a year. From 1973 to 1995 it grew <span data-bind="g1"></span>. A burst between 1995 and 2005, when computers and the internet finally showed up in the productivity statistics, ran at <span data-bind="g2"></span>, and then the slow pace returned.</p>
+        <p>Had the postwar pace simply continued, American workers would now produce <span data-bind="gap"></span> more per hour than they do. That is not a forecast or a model. It is the arithmetic of a rate that held for twenty-five years and then stopped.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="fig-title">Annual growth by era, percent</div>
+        </div>
+        <div id="eras"></div>
+        <div class="legend">
+          <span><i style="background:var(--ink)"></i>Output per hour</span>
+          <span><i style="background:var(--accent)"></i>Total factor productivity</span>
+        </div>
+        <figcaption>Total factor productivity is the part of growth not explained by more capital or more hours: roughly, getting more out of the same inputs. It comes from the Penn World Table and ends in 2023, so the last era is short.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p>Total factor productivity tells the same story more starkly. It is the closest thing economics has to a measure of new ideas put to work, and in both slow eras it grew at about a quarter of a percent a year. Some of the slowdown may be mismeasurement, since a free search engine adds little to GDP. But the slowdown started in the 1970s, decades before the goods that are hardest to measure arrived.</p>
+        <p>Since 2019 productivity has grown <span data-bind="g4"></span> a year. It is tempting to call that the start of a new burst. Six years is too short to say, and productivity figures get revised. The honest position is to write down now what would count as evidence, so it can't be redefined later: say, another five years above 2%.</p>
+
+        <h2>Why the decimal point matters</h2>
+        <p>Cowen's later book, <em>Stubborn Attachments</em>, makes the moral case: because growth compounds, small differences in the rate become large differences in how people live, and they keep growing. A growth rate is a fact about the future that most people never think about.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="range" style="flex:1;min-width:280px">
+            <span>Growth in real income per person</span>
+            <input type="range" id="rate" min="0" max="4" step="0.1" value="2" aria-label="Annual growth rate">
+            <output id="rate-out">2.0%</output>
+          </div>
+        </div>
+        <div id="compound"></div>
+        <div class="callout" id="callout"></div>
+        <figcaption>Starting from US real GDP per person today (<span data-bind="gdppc"></span> in 2017 dollars). Faint lines mark 1% and 3% for comparison.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p>The gap between 1% and 2% growth, the gap between the stagnant eras and the good ones, is the gap between a child born today being about twice as rich at seventy-five as the average American is now, or more than four times as rich. Few economic questions have stakes that large, and few get less attention.</p>
+
+        <h2>Method</h2>
+        <p class="muted">Labor productivity is FRED series OPHNFB (output per hour of all persons, nonfarm business sector), quarterly. Era growth rates are compound annual rates between annual averages. The counterfactual extends the 1948–73 compound rate from 1973. Total factor productivity is RTFPNAUSA632NRUG (Penn World Table, constant national prices). Real GDP per capita is A939RX0Q048SBEA. Built by <a href="https://github.com/zainhameedo/zainhameedo.github.io/blob/main/_build/build_data.py">this script</a>.</p>
+      </div>
+    </article>
+  </main>
+  <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="../js/charts.js"></script>
+  <script>
+  (async function () {
+    const data = await (await fetch("data/stagnation.json")).json();
+    const { fmt } = Z;
+    const parse = d3.timeParse("%Y-%m");
+    const lp = data.lp.map(([d, v]) => ({ d: parse(d), v }));
+    const cfStart = lp.findIndex((p) => +p.d === +parse(data.cf_from));
+    const cf = data.cf.map((v, i) => ({ d: lp[cfStart + i].d, v }));
+    const E = data.eras;
+    const pct = (v) => fmt.d1(v) + "%";
+    Z.bind("g0", pct(E[0].lp)); Z.bind("g1", pct(E[1].lp)); Z.bind("g2", pct(E[2].lp)); Z.bind("g4", pct(E[4].lp));
+    const last = lp[lp.length - 1], lastCf = cf[cf.length - 1];
+    Z.bind("gap", fmt.pct(lastCf.v / last.v - 1));
+    const gdppc = data.gdppc[data.gdppc.length - 1][1];
+    Z.bind("gdppc", "$" + fmt.int(gdppc));
+
+    function drawLp() {
+      const el = document.getElementById("lp");
+      const { s, W, H } = Z.svg(el, 380);
+      const m = { t: 16, r: 70, b: 26, l: 40 };
+      const x = d3.scaleTime().domain(d3.extent(lp, (p) => p.d)).range([m.l, W - m.r]);
+      const y = d3.scaleLog().domain([20, 220]).range([H - m.b, m.t]);
+      const ticks = [25, 50, 100, 200];
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(ticks).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(ticks).tickFormat(d3.format("d")).tickSize(0)).select(".domain").remove();
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(W > 600 ? 10 : 5).tickSizeOuter(0));
+
+      // Era bands with their rates.
+      E.forEach((e, i) => {
+        const x0 = x(new Date(e.from, 0, 1)), x1 = x(new Date(Math.min(e.to, 2026), 0, 1));
+        if (i % 2 === 0) s.append("rect").attr("x", x0).attr("width", x1 - x0).attr("y", m.t).attr("height", H - m.t - m.b).style("fill", "var(--wash)");
+        s.append("text").attr("x", (x0 + x1) / 2).attr("y", H - m.b - 10).attr("text-anchor", "middle")
+          .style("fill", "var(--ink)").style("font-weight", 600).text(pct(e.lp));
+        s.append("text").attr("x", (x0 + x1) / 2).attr("y", H - m.b - 24).attr("text-anchor", "middle").style("font-size", "10px")
+          .text(`${e.from}–${String(e.to).slice(2)}`);
+      });
+
+      s.append("path").datum(cf).attr("d", d3.line().x((p) => x(p.d)).y((p) => y(p.v)))
+        .attr("fill", "none").style("stroke", "var(--accent)").style("stroke-width", 1.5).style("stroke-dasharray", "5 4");
+      s.append("path").datum(lp).attr("d", d3.line().x((p) => x(p.d)).y((p) => y(p.v)))
+        .attr("fill", "none").style("stroke", "var(--ink)").style("stroke-width", 2);
+      s.append("text").attr("x", x(lastCf.d) + 6).attr("y", y(lastCf.v) + 4).style("fill", "var(--accent)").text(fmt.int(lastCf.v));
+      s.append("text").attr("x", x(last.d) + 6).attr("y", y(last.v) + 4).style("fill", "var(--ink)").text(fmt.int(last.v));
+      s.append("line").attr("x1", x(last.d) + 3).attr("x2", x(last.d) + 3).attr("y1", y(lastCf.v)).attr("y2", y(last.v))
+        .style("stroke", "var(--accent)").style("opacity", 0.5);
+
+      const focus = s.append("circle").attr("r", 3.5).style("fill", "var(--ink)").style("opacity", 0);
+      s.append("rect").attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b).style("fill", "transparent")
+        .on("mousemove", function (ev) {
+          const i = d3.bisector((p) => p.d).center(lp, x.invert(d3.pointer(ev, this)[0])), p = lp[i];
+          focus.attr("cx", x(p.d)).attr("cy", y(p.v)).style("opacity", 1);
+          const c = cf.find((q) => +q.d === +p.d);
+          Z.tip(`<b>${d3.timeFormat("Q%q %Y")(p.d)}</b><br>Output per hour ${fmt.d1(p.v)}` + (c ? `<br>At the 1948–73 pace: ${fmt.d1(c.v)}` : ""), ev);
+        })
+        .on("mouseleave", () => { focus.style("opacity", 0); Z.untip(); });
+    }
+
+    function drawEras() {
+      const el = document.getElementById("eras");
+      const { s, W, H } = Z.svg(el, 220);
+      const m = { t: 10, r: 10, b: 28, l: 34 };
+      const x0 = d3.scaleBand().domain(E.map((e) => `${e.from}–${e.to}`)).range([m.l, W - m.r]).padding(0.28);
+      const x1 = d3.scaleBand().domain(["lp", "tfp"]).range([0, x0.bandwidth()]).padding(0.08);
+      const y = d3.scaleLinear().domain([0, 3.3]).range([H - m.b, m.t]);
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(3).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(3).tickFormat((v) => v + "%").tickSize(0)).select(".domain").remove();
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x0).tickSizeOuter(0).tickSize(0));
+      const g = s.append("g").selectAll("g").data(E).join("g").attr("transform", (e) => `translate(${x0(`${e.from}–${e.to}`)},0)`);
+      for (const [k, c] of [["lp", "var(--ink)"], ["tfp", "var(--accent)"]]) {
+        g.filter((e) => e[k] != null).append("rect").attr("x", x1(k)).attr("width", x1.bandwidth())
+          .attr("y", (e) => y(e[k])).attr("height", (e) => y(0) - y(e[k])).style("fill", c).style("opacity", k === "lp" ? 0.85 : 0.75);
+        g.filter((e) => e[k] != null).append("text").attr("x", x1(k) + x1.bandwidth() / 2).attr("y", (e) => y(e[k]) - 4)
+          .attr("text-anchor", "middle").style("fill", "var(--ink)").style("font-size", "10.5px").text((e) => fmt.d1(e[k]));
+      }
+    }
+
+    const rateEl = document.getElementById("rate"), rateOut = document.getElementById("rate-out");
+    function drawCompound() {
+      const r = +rateEl.value / 100;
+      rateOut.textContent = fmt.d1(r * 100) + "%";
+      const el = document.getElementById("compound");
+      const { s, W, H } = Z.svg(el, 280);
+      const m = { t: 12, r: 70, b: 26, l: 56 };
+      const yrs = d3.range(0, 76);
+      const x = d3.scaleLinear().domain([0, 75]).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([0, gdppc * Math.pow(1 + Math.max(r, 0.03), 75) * 1.08]).range([H - m.b, m.t]);
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat((v) => "$" + d3.format("~s")(v)).tickSize(0)).select(".domain").remove();
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues([0, 25, 50, 75]).tickFormat((v) => (v ? `+${v} years` : "today")).tickSizeOuter(0));
+      const path = (g) => d3.line().x((t) => x(t)).y((t) => y(gdppc * Math.pow(1 + g, t)))(yrs);
+      for (const g of [0.01, 0.03]) {
+        s.append("path").attr("d", path(g)).attr("fill", "none").style("stroke", "var(--faint)").style("stroke-dasharray", "3 3");
+        s.append("text").attr("x", x(75) + 5).attr("y", y(gdppc * Math.pow(1 + g, 75)) + 4).text(g * 100 + "%");
+      }
+      s.append("path").attr("d", path(r)).attr("fill", "none").style("stroke", "var(--accent)").style("stroke-width", 2.5);
+      const end = gdppc * Math.pow(1 + r, 75);
+      s.append("circle").attr("cx", x(75)).attr("cy", y(end)).attr("r", 4).style("fill", "var(--accent)");
+      const dbl = r > 0 ? Math.log(2) / Math.log(1 + r) : Infinity;
+      document.getElementById("callout").innerHTML =
+        `<div><b>${isFinite(dbl) ? fmt.int(dbl) + " years" : "never"}</b><span>to double living standards</span></div>` +
+        `<div><b>${d3.format(".1f")(end / gdppc)}×</b><span>today's income after 75 years</span></div>` +
+        `<div><b>$${fmt.int(end)}</b><span>average real income per person, a lifetime from now</span></div>`;
+    }
+    rateEl.addEventListener("input", drawCompound);
+
+    drawLp(); drawEras(); drawCompound();
+    Z.onResize(() => { drawLp(); drawEras(); drawCompound(); });
+  })();
+  </script>
+</body>
+</html>

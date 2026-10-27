@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Money and prices · Zain Hameed</title>
+  <meta name="description" content="Sixty years of money growth and inflation in every country with data. Where Friedman's rule holds, and where it fades.">
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../js/site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="home" href="../">Zain Hameed</a>
+    <nav><button class="mode" type="button" aria-label="Toggle dark mode">Dark</button></nav>
+  </header>
+  <main>
+    <article>
+      <div class="page">
+        <h1>Money and prices</h1>
+        <p class="lede">Sixty years of money growth and inflation in every country with data. Where Friedman's rule holds, and where it fades.</p>
+        <p class="byline meta">Zain Hameed · October 2026 · Data: World Bank</p>
+
+        <blockquote class="pull">Inflation is always and everywhere a monetary phenomenon.<cite>Milton Friedman, 1963</cite></blockquote>
+
+        <p>Friedman's sentence is often quoted as a slogan, but it is also a prediction you can check. If a country's money supply grows faster than its output, the difference should show up as rising prices, roughly one for one, over periods long enough for the short-run noise to wash out. That is a bold claim in Popper's sense. It names a number, and the world could easily have refused to match it.</p>
+        <p>The test below uses every country the World Bank reports, averaged by decade: <span data-bind="n"></span> country-decades from the 1960s to the 2020s. On the horizontal axis is how fast broad money grew minus how fast real output grew. On the vertical axis is inflation. If Friedman is right, the points should sit on the diagonal.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="controls">
+            <label class="fig-sub" for="country">Trace a country</label>
+            <select id="country"></select>
+          </div>
+          <div class="seg" id="decade-seg" role="group" aria-label="Decade"></div>
+        </div>
+        <div id="scatter"></div>
+        <div class="legend">
+          <span><i style="background:var(--faint)"></i>One country, one decade (average annual rates)</span>
+          <span><i style="background:var(--accent)"></i>Selected country, decade by decade</span>
+          <span><i style="background:transparent;border-top:1.5px dashed var(--ink);height:0;border-radius:0;width:14px"></i>Inflation = money growth − output growth</span>
+        </div>
+        <figcaption>Both axes are stretched near zero and compressed above about 10%, so that 1990s Switzerland (2%) and the 1990s Democratic Republic of the Congo (1,850%) fit on the same chart. Hover any point.</figcaption>
+      </figure>
+
+      <div class="page">
+        <p>Over the whole sample, the fit is remarkable: a slope of <span data-bind="allSlope"></span> and a correlation of <span data-bind="allCorr"></span>. But that summary is carried by the high-inflation cases, and the interesting part is what happens when you split them up.</p>
+      </div>
+
+      <figure class="wide">
+        <div id="bands"></div>
+      </figure>
+
+      <div class="page">
+        <p>Above 40% a year, money growth and inflation move together almost exactly. Few relationships in macroeconomics fit this well. Every very high inflation in the data, from Bolivia and Peru in the 1980s to Brazil and the post-Soviet economies in the 1990s, comes with money growth of about the same size.</p>
+        <p>Below 10%, the relationship nearly disappears. That is not evidence against the quantity theory so much as evidence about what it leaves out. When money grows slowly, the noise in how much money people want to hold (velocity, in the jargon) is as large as the signal. Financial innovation changes what counts as money. And central banks that target inflation adjust the money supply to hit their target, so money becomes a response to inflation as much as a cause. The rule is a law about large numbers that gets drowned out in small ones.</p>
+        <p>That is a more useful conclusion than either "Friedman was right" or "monetarism failed." If you are trying to explain 200% inflation, start with the central bank's balance sheet. If you are trying to explain why inflation was 3% rather than 2%, money growth alone won't tell you.</p>
+      </div>
+
+      <figure class="wide">
+        <div class="fig-head">
+          <div class="fig-title" id="series-title"></div>
+          <div class="fig-sub">Annual, percent</div>
+        </div>
+        <div id="series"></div>
+        <div class="legend">
+          <span><i style="background:var(--blue)"></i>Broad money growth</span>
+          <span><i style="background:var(--accent)"></i>Inflation (consumer prices)</span>
+        </div>
+      </figure>
+
+      <div class="page">
+        <h2>Method</h2>
+        <p class="muted">World Bank indicators FM.LBL.BMNY.ZG (broad money growth), FP.CPI.TOTL.ZG (consumer price inflation) and NY.GDP.MKTP.KD.ZG (real GDP growth), 1960 onward, every economy that isn't an aggregate. Rates are averaged within each decade in logs, so that a year of 1,000% followed by a year of −50% doesn't average to 475%, and a country-decade needs at least five years with all three series. Slopes are least-squares fits of log inflation on log excess money growth within each band. Broad money definitions differ across countries and change over time, which adds noise at the low end. Built by <a href="https://github.com/zainhameedo/zainhameedo.github.io/blob/main/_build/build_data.py">this script</a>.</p>
+      </div>
+    </article>
+  </main>
+  <footer class="site-footer"><span>Zain Hameed</span><span><a href="../">Home</a></span></footer>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="../js/charts.js"></script>
+  <script>
+  (async function () {
+    const data = await (await fetch("data/money.json")).json();
+    const { fmt } = Z;
+    let decade = "all", iso = "ISR";
+    const decades = [...new Set(data.points.map((p) => p.decade))].sort();
+    const all = data.bands.find((b) => b.band === "all");
+    Z.bind("n", fmt.int(data.points.length));
+    Z.bind("allSlope", d3.format(".2f")(all.slope));
+    Z.bind("allCorr", d3.format(".2f")(all.corr));
+
+    const sel = document.getElementById("country");
+    sel.innerHTML = Object.entries(data.names).filter(([k]) => (data.series[k] || []).length >= 30).sort((a, b) => a[1].localeCompare(b[1]))
+      .map(([k, n]) => `<option value="${k}"${k === iso ? " selected" : ""}>${n}</option>`).join("");
+    sel.addEventListener("change", () => { iso = sel.value; drawScatter(); drawSeries(); });
+    Z.seg(document.getElementById("decade-seg"), [["all", "All"], ...decades.map((d) => [String(d), d + "s"])], decade,
+      (v) => { decade = v; drawScatter(); });
+
+    const pctTick = (v) => (Math.abs(v) >= 1000 ? d3.format(",")(v) : v) + "%";
+
+    function drawScatter() {
+      const el = document.getElementById("scatter");
+      const { s, W } = Z.svg(el, 0);
+      const H = Math.min(560, Math.max(360, W * 0.55));
+      s.attr("viewBox", `0 0 ${W} ${H}`);
+      const m = { t: 14, r: 20, b: 40, l: 56 };
+      const x = d3.scaleSymlog().constant(8).domain([-15, 2500]).range([m.l, W - m.r]);
+      const y = d3.scaleSymlog().constant(8).domain([-15, 2500]).range([H - m.b, m.t]);
+      const ticks = [-10, 0, 5, 10, 25, 50, 100, 250, 1000];
+      s.append("g").attr("class", "grid").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues(ticks).tickSize(-(H - m.t - m.b)).tickFormat(""));
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(ticks).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues(ticks).tickFormat(pctTick).tickSizeOuter(0));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(ticks).tickFormat(pctTick).tickSizeOuter(0));
+      s.append("text").attr("x", W - m.r).attr("y", H - 6).attr("text-anchor", "end").text("Money growth minus real output growth, average per year →");
+      s.append("text").attr("x", m.l + 6).attr("y", m.t + 10).text("↑ Inflation");
+      s.append("line").attr("x1", x(-15)).attr("y1", y(-15)).attr("x2", x(2500)).attr("y2", y(2500))
+        .style("stroke", "var(--ink)").style("stroke-dasharray", "4 3").style("opacity", 0.6);
+
+      const pts = data.points.filter((p) => decade === "all" || p.decade === +decade);
+      s.append("g").selectAll("circle").data(pts).join("circle")
+        .attr("cx", (p) => x(p.x)).attr("cy", (p) => y(p.p)).attr("r", 3)
+        .style("fill", "var(--faint)").style("opacity", 0.55)
+        .on("mousemove", (ev, p) => Z.tip(`<b>${p.name}, ${p.decade}s</b><br>Inflation ${fmt.d1(p.p)}%<br>Money growth ${fmt.d1(p.m)}%, output growth ${fmt.d1(p.g)}%`, ev))
+        .on("mouseleave", Z.untip);
+
+      const mine = data.points.filter((p) => p.iso === iso).sort((a, b) => a.decade - b.decade);
+      s.append("path").datum(mine).attr("d", d3.line().x((p) => x(p.x)).y((p) => y(p.p)))
+        .attr("fill", "none").style("stroke", "var(--accent)").style("stroke-width", 1.5);
+      const g = s.append("g").selectAll("g").data(mine).join("g").attr("transform", (p) => `translate(${x(p.x)},${y(p.p)})`);
+      g.append("circle").attr("r", 4.5).style("fill", "var(--accent)").style("stroke", "var(--paper)").style("stroke-width", 1.5)
+        .on("mousemove", (ev, p) => Z.tip(`<b>${p.name}, ${p.decade}s</b><br>Inflation ${fmt.d1(p.p)}%<br>Money growth ${fmt.d1(p.m)}%, output growth ${fmt.d1(p.g)}%`, ev))
+        .on("mouseleave", Z.untip);
+      g.append("text").attr("x", 7).attr("y", -6).attr("class", "halo").style("fill", "var(--ink)").style("font-size", "10.5px").text((p) => p.decade + "s");
+    }
+
+    function drawBands() {
+      const order = ["under 10%", "10% to 40%", "over 40%", "all"];
+      const rows = order.map((b) => data.bands.find((x) => x.band === b));
+      document.getElementById("bands").innerHTML = `<table class="tbl">
+        <tr><th>Money growth minus output growth</th><th>Country-decades</th><th>Slope</th><th>Correlation</th><th></th></tr>
+        ${rows.map((r) => `<tr><td>${r.band === "all" ? "All" : r.band[0].toUpperCase() + r.band.slice(1)}</td><td>${r.n}</td>
+          <td class="${Math.abs(r.slope - 1) < 0.15 ? "best" : ""}">${d3.format(".2f")(r.slope)}</td><td>${d3.format(".2f")(r.corr)}</td>
+          <td style="width:30%"><svg viewBox="0 0 100 10" preserveAspectRatio="none" style="width:100%;height:10px;display:block"><rect width="${Math.max(0, r.corr) * 100}" height="10" style="fill:var(--accent);opacity:.7"/></svg></td></tr>`).join("")}
+        <caption>A slope of 1 means each extra point of excess money growth adds one point of inflation, as the quantity theory predicts.</caption></table>`;
+    }
+
+    function drawSeries() {
+      const el = document.getElementById("series");
+      const rows = (data.series[iso] || []).map(([yr, m, p]) => ({ yr, m, p }));
+      document.getElementById("series-title").textContent = `${data.names[iso]}: money growth and inflation by year`;
+      const { s, W, H } = Z.svg(el, 260);
+      const m = { t: 10, r: 14, b: 24, l: 52 };
+      const x = d3.scaleLinear().domain(d3.extent(rows, (r) => r.yr)).range([m.l, W - m.r]);
+      const hi = d3.max(rows, (r) => Math.max(r.m, r.p));
+      const y = d3.scaleSymlog().constant(8).domain([Math.min(-5, d3.min(rows, (r) => Math.min(r.m, r.p))), hi]).range([H - m.b, m.t]);
+      const ticks = [0, 5, 10, 25, 50, 100, 250, 1000, 5000, 20000].filter((t) => t <= hi);
+      s.append("g").attr("class", "grid").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(ticks).tickSize(-(W - m.l - m.r)).tickFormat(""));
+      s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues(ticks).tickFormat(pctTick).tickSize(0)).select(".domain").remove();
+      s.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(8).tickFormat(d3.format("d")).tickSizeOuter(0));
+      for (const [k, c] of [["m", "var(--blue)"], ["p", "var(--accent)"]]) {
+        s.append("path").datum(rows).attr("d", d3.line().x((r) => x(r.yr)).y((r) => y(r[k])))
+          .attr("fill", "none").style("stroke", c).style("stroke-width", 1.75);
+      }
+      const focus = s.append("line").attr("y1", m.t).attr("y2", H - m.b).style("stroke", "var(--faint)").style("opacity", 0);
+      s.append("rect").attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b).style("fill", "transparent")
+        .on("mousemove", function (ev) {
+          const yr = Math.round(x.invert(d3.pointer(ev, this)[0])), r = rows.find((d) => d.yr === yr);
+          if (!r) return;
+          focus.attr("x1", x(yr)).attr("x2", x(yr)).style("opacity", 1);
+          Z.tip(`<b>${data.names[iso]}, ${yr}</b><br>Money growth ${fmt.d1(r.m)}%<br>Inflation ${fmt.d1(r.p)}%`, ev);
+        })
+        .on("mouseleave", () => { focus.style("opacity", 0); Z.untip(); });
+    }
+
+    drawScatter(); drawBands(); drawSeries();
+    Z.onResize(() => { drawScatter(); drawSeries(); });
+  })();
+  </script>
+</body>
+</html>
